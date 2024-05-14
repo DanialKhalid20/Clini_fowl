@@ -27,13 +27,23 @@ app.post("/Signuppage", signup.signup);
 app.get("/verification", email_verify.email_verify);
 cleanupExpiredTokens();
 
+//Google signup
 const pass_port = passport(); // Call the setupPassport function to set up Passport
 
 app.use(pass_port.initialize());
 app.use(pass_port.session());
 
 app.get(
-  "/auth/google/callback",
+  "/auth/google/callback1",
+  pass_port.authenticate("google", {
+    successRedirect: "http://localhost:5173/Landing",
+    failureRedirect:
+      "http://localhost:5173/Loginpage?error=Email already exists",
+  })
+);
+
+app.get(
+  "/auth/google/callback2",
   pass_port.authenticate("google", {
     successRedirect: "http://localhost:5173/Landing",
     failureRedirect:

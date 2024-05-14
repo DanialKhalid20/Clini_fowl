@@ -2,6 +2,7 @@ import Page1 from "./components/openingpage/Page1";
 import Loginpage from "./components/openingpage/Loginpage";
 import Signuppage from "./components/openingpage/Signuppage";
 import Landing from "./components/landingpage/Landing";
+import Chatbot from "./components/chatbot/Chatbot";
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
@@ -13,6 +14,7 @@ export default function App() {
         <Route path="/Loginpage" element={<Loginpage />} />
         <Route path="/Signuppage" element={<Signuppage />} />
         <Route path="/Landing" element={<Landing />} />
+        <Route path="/chatbot" element={<Chatbot />} />
       </Routes>
     </Router>
   );

@@ -1,4 +1,5 @@
 import logo from "../../assets/logo.png";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -23,9 +24,9 @@ const Header = () => {
           <a href="/" className="hover:underline">
             Detection
           </a>
-          <a href="/" className="hover:underline">
-            Chatbot
-          </a>
+          <Link to="/chatbot">
+            <div className="hover:underline">Chatbot</div>
+          </Link>
           <a href="/" className="hover:underline">
             Nearby Vet
           </a>
