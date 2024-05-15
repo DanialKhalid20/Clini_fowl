@@ -34,20 +34,11 @@ app.use(pass_port.initialize());
 app.use(pass_port.session());
 
 app.get(
-  "/auth/google/callback1",
+  "/auth/google/callback",
   pass_port.authenticate("google", {
     successRedirect: "http://localhost:5173/Landing",
     failureRedirect:
       "http://localhost:5173/Loginpage?error=Email already exists",
-  })
-);
-
-app.get(
-  "/auth/google/callback2",
-  pass_port.authenticate("google", {
-    successRedirect: "http://localhost:5173/Landing",
-    failureRedirect:
-      "http://localhost:5173/Signuppage?error=Email already exists",
   })
 );
 

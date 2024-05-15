@@ -5,7 +5,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 const signupwithgoogle = () => {
-  window.open("http://localhost:8080/auth/google/callback2", "_self");
+  window.open("http://localhost:8080/auth/google/callback", "_self");
 };
 
 export default function Loginpage() {
@@ -154,7 +154,7 @@ export default function Loginpage() {
             }}
           >
             <FcGoogle className="text-3xl " />
-            Signin with Google
+            Continue with Google
           </button>
         </p>
 

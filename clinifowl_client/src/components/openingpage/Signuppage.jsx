@@ -180,7 +180,7 @@ export default function SignupPage() {
             className="w-full flex justify-center gap-2 bg-celestialblue text-white text-lg font-medium py-2 rounded-lg mb-4"
           >
             <FcGoogle className="text-3xl " />
-            Signup with Google
+            Continue with Google
           </button>
         </p>
         <div className="text-center">
