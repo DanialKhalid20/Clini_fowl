@@ -3,7 +3,7 @@ import { RiTwitterXFill } from "react-icons/ri";
 
 const Footer = () => {
   return (
-    <div className="bg-dutchwhite">
+    <div className="bg-alabaster">
       <footer className=" max-w-6xl flex items-center justify-between mx-auto px-8">
         <div>
           <h2 className="text-xl text-black font-bold mb-2">Get in Touch</h2>

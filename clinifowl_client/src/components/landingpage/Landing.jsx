@@ -15,7 +15,7 @@ export default function Landing() {
       <Card />
       <Video />
       <Howtouse />
-      <Newsletter />
+      {/* <Newsletter /> */}
       <Footer />
     </>
   );

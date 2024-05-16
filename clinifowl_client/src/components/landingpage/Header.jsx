@@ -27,9 +27,9 @@ const Header = () => {
           <Link to="/chatbot">
             <div className="hover:underline">Chatbot</div>
           </Link>
-          <a href="/" className="hover:underline">
-            Nearby Vet
-          </a>
+          <Link to="/nearbydoc">
+            <div className="hover:underline">Nearby Vet</div>
+          </Link>
           <a
             href="/"
             className="bg-sienna text-white text-xl rounded-full px-6 py-2"

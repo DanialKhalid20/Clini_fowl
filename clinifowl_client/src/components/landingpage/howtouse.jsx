@@ -42,7 +42,7 @@ export default function HowToUse() {
     <div className="mt-20 pt-12 pb-12 bg-dutchwhite">
       <div className="mx-auto max-w-4xl pt-10">
         <h1 className="text-black font-bold text-4xl">How Does It Work?</h1>
-        <p className="text-black font-semibold text-lg text-justify mt-5">
+        <p className="text-gray-900 font-medium text-lg text-justify mt-5">
           Clinifowl is a user-friendly website designed to help you care for
           your chickens&apos; health. Get started by easily adding pictures of
           your hen&apos;s feces to detect potential signs of Salmonella or
