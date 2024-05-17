@@ -4,6 +4,7 @@ import Signuppage from "./components/openingpage/Signuppage";
 import Landing from "./components/landingpage/Landing";
 import Chatbot from "./components/chatbot/Chatbot";
 import Doctor from "./components/nearbyVet/Doctor";
+import Detect from "./components/detection/Detection";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/Landing" element={<Landing />} />
         <Route path="/chatbot" element={<Chatbot />} />
         <Route path="/nearbydoc" element={<Doctor />} />
+        <Route path="/detect" element={<Detect />} />
       </Routes>
     </Router>
   );

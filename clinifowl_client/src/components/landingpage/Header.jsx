@@ -13,29 +13,28 @@ const Header = () => {
             className="hidden md:block"
             alt="Screenshots of the dashboard project showing desktop version"
           />
-          <a href="/" className="text-black font-semibold text-3xl">
-            Clinifowl
-          </a>
+          <Link to="/chatbot">
+            <div className="text-black font-semibold text-3xl">Clinifowl</div>
+          </Link>
         </div>
         <nav className="flex gap-8 text-bg text-primary items-center font-semibold text-lg">
-          <a href="/" className="hover:underline">
-            Home
-          </a>
-          <a href="/" className="hover:underline">
-            Detection
-          </a>
+          <Link to="/Landing">
+            <div className="hover:underline">Home</div>
+          </Link>
+          <Link to="/detect">
+            <div className="hover:underline">Detection</div>
+          </Link>
           <Link to="/chatbot">
             <div className="hover:underline">Chatbot</div>
           </Link>
           <Link to="/nearbydoc">
             <div className="hover:underline">Nearby Vet</div>
           </Link>
-          <a
-            href="/"
-            className="bg-sienna text-white text-xl rounded-full px-6 py-2"
-          >
-            Logout
-          </a>
+          <Link to="/">
+            <div className="bg-sienna text-white text-xl rounded-full px-6 py-2">
+              Logout
+            </div>
+          </Link>
         </nav>
       </div>
     </header>

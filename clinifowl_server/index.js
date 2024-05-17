@@ -9,15 +9,20 @@ const email_verify = require("./Auth/emailverify");
 const passport = require("./Auth/passportSetup");
 const session = require("express-session");
 const cleanupExpiredTokens = require("./Auth/cronjob");
+const cookieParser = require("cookie-parser");
 
 app.use(express.json());
 app.use(cors());
-
+app.use(cookieParser());
 app.use(
   session({
-    secret: "1dbcekdkedledw9dnur",
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
+    cookie: {
+      secure: false, //because we are using http instead of https
+      maxAge: 1000 * 60 * 60 * 24,
+    },
   })
 );
 
