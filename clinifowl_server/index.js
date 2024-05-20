@@ -10,6 +10,7 @@ const passport = require("./Auth/passportSetup");
 const session = require("express-session");
 const cleanupExpiredTokens = require("./Auth/cronjob");
 const cookieParser = require("cookie-parser");
+const { handleChatRequest } = require('./Auth/openai');
 
 app.use(express.json());
 app.use(cors());
@@ -46,6 +47,7 @@ app.get(
       "http://localhost:5173/Loginpage?error=Email already exists",
   })
 );
+app.post('/api/chat', handleChatRequest);
 
 const port = process.env.PORT || 8080;
 app.listen(port, console.log(`Listening on port ${port}...`));

@@ -11,6 +11,7 @@
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.13",
     "nodemon": "^3.1.0",
+    "openai": "^4.47.1",
     "passport": "^0.7.0",
     "passport-google-oauth2": "^0.2.0"
   },
