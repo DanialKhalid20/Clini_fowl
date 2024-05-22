@@ -367,7 +367,7 @@ export default class Sidebar extends Component {
                 <input
                   type="text"
                   id="place-name"
-                  placeholder="Ex. The Osmanly Restaurant"
+                  placeholder="Ex. The vets"
                   required
                 />
               </div>
@@ -376,7 +376,7 @@ export default class Sidebar extends Component {
                 <input
                   type="text"
                   id="place-address"
-                  placeholder="Ex. Kempinski Nile Hotel, Corniche El Nil, 12 Ahmed Raghab Street"
+                  placeholder="Ex. Usman plaza, I-10 Markaz, Islamabad"
                   required
                 />
               </div>
@@ -403,7 +403,7 @@ export default class Sidebar extends Component {
                 <input
                   type="text"
                   id="place-phone"
-                  placeholder="Ex. 02 27980000"
+                  placeholder="Ex. 051 27980000"
                   required
                 />
               </div>

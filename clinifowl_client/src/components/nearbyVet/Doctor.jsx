@@ -3,10 +3,35 @@ import "./Doctor.scss";
 import Sidebar from "./component/sidebar/Sidebars.jsx";
 import Map from "./component/map/Maps.jsx";
 import mapStyle from "./mapstyles.jsx";
+import Header from "../landingpage/Header.jsx";
 
 var map;
 var infowindow;
 var service;
+
+function calculateAndDisplayRoute(origin, destLat, destLng) {
+  var directionsService = new window.google.maps.DirectionsService();
+  var directionsRenderer = new window.google.maps.DirectionsRenderer();
+
+  directionsRenderer.setMap(map);
+
+  var destination = { lat: destLat, lng: destLng };
+
+  directionsService.route(
+    {
+      origin: origin,
+      destination: destination,
+      travelMode: "DRIVING",
+    },
+    (response, status) => {
+      if (status === "OK") {
+        directionsRenderer.setDirections(response);
+      } else {
+        window.alert("Directions request failed due to " + status);
+      }
+    }
+  );
+}
 
 class Doctor extends Component {
   state = {
@@ -15,6 +40,7 @@ class Doctor extends Component {
     lat: 33.6844,
     lng: 73.0479,
     zoom: 17,
+    selectedDestination: null, // Add a state to hold the selected destination
   };
 
   componentDidMount() {
@@ -29,30 +55,25 @@ class Doctor extends Component {
   };
 
   initMap = () => {
-    // Default Location
     var location = {
       lat: this.state.lat,
       lng: this.state.lng,
     };
 
-    // Initialize Map
     map = new window.google.maps.Map(document.getElementById("map"), {
       center: location,
       zoom: 15,
       styles: mapStyle,
     });
 
-    // Current Location Marker
     var marker = new window.google.maps.Marker({
       position: location,
       map: map,
       title: "You're Here!",
     });
 
-    // Ask for user location
     this.getCurrentLocation();
 
-    // Request Info: It will be used for Google Places API `PlacesServices` to get certain places that match our criteria
     var request = {
       location: location,
       radius: 5000,
@@ -80,22 +101,18 @@ class Doctor extends Component {
         "geometry",
       ];
 
-      // Get Places Details
-      results.map((place) => {
+      results.forEach((place) => {
         service.getDetails(
           { placeId: place.place_id, fields },
           function (placeInfo, status) {
             if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-              // Add New Place
               placesInfo.push(placeInfo);
-
-              // Update All Places & Add Markers
               that.setState(
                 {
                   placesDetails: placesInfo,
                   sortedPlacesDetails: placesInfo,
                 },
-                that.addMarkers(placesInfo)
+                () => that.addMarkers(placesInfo)
               );
             }
           }
@@ -113,32 +130,39 @@ class Doctor extends Component {
       map: map,
       title: place.name,
       icon: {
-        url: "https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png",
+        url: "https://img.freepik.com/premium-vector/vector-design-veterinary-clinic-sign-animal-footprint-with-medical-cross-transparent-back_855620-662.jpg",
         anchor: new window.google.maps.Point(10, 10),
-        scaledSize: new window.google.maps.Size(20, 20),
+        scaledSize: new window.google.maps.Size(30, 30),
       },
       position: place.geometry.location,
     });
 
-    marker.addListener("click", function () {
-      var request = {
-        reference: place.reference,
-      };
-
+    marker.addListener("click", () => {
       let placePicture = place.photos
         ? place.photos[0].getUrl({ maxWidth: 300, maxHeight: 300 })
         : "https://via.placeholder.com/300";
 
       let content = `
-        <h2>${place.name}</h2>
-        <img src=${placePicture}>
-        <ul>
-          <li>${place.formatted_address}</li>
-          <li>${place.formatted_phone_number}</li>
-        </ul>
-      `;
+      <h2>${place.name}</h2>
+      <img src=${placePicture}>
+      <ul>
+        <li>${place.formatted_address}</li>
+        <li>${place.formatted_phone_number}</li>
+      </ul>
+      <button class="get-direction-btn">Get Directions</button>
+    `;
       infowindow.setContent(content);
       infowindow.open(map, marker);
+
+      // Find the button element and attach a click event listener
+      const button = document.querySelector(".get-direction-btn");
+      button.addEventListener("click", () => {
+        this.calculateAndDisplayRoute(
+          { lat: this.state.lat, lng: this.state.lng },
+          place.geometry.location.lat(),
+          place.geometry.location.lng()
+        );
+      });
     });
   };
 
@@ -208,19 +232,17 @@ class Doctor extends Component {
     currentPlaces.push(newPlace);
 
     let placeMarker = () => {
-      // Position
       let latLng = {
         lat: newPlace.lat,
         lng: newPlace.lng,
       };
 
-      // Add Marker
       var marker = new window.google.maps.Marker({
         position: latLng,
         map: map,
         title: newPlace.name,
         icon: {
-          url: "https://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png",
+          url: "https://img.freepik.com/premium-vector/vector-design-veterinary-clinic-sign-animal-footprint-with-medical-cross-transparent-back_855620-662.jpg",
           anchor: new window.google.maps.Point(10, 10),
           scaledSize: new window.google.maps.Size(20, 20),
         },
@@ -228,7 +250,6 @@ class Doctor extends Component {
       marker.setMap(map);
       map.setCenter(latLng);
 
-      // InfoWindow
       marker.addListener("click", function () {
         let placePicture = newPlace.photos
           ? newPlace.photos[0].getUrl({ maxWidth: 300, maxHeight: 300 })
@@ -253,17 +274,37 @@ class Doctor extends Component {
       },
       placeMarker()
     );
+  };
 
-    console.log(newPlace.lat, newPlace.lng);
+  // Function to set the selected destination
+  setSelectedDestination = (destLat, destLng) => {
+    this.setState({
+      selectedDestination: { lat: destLat, lng: destLng },
+    });
+  };
+
+  // Function to trigger route calculation
+  triggerRouteCalculation = () => {
+    const { selectedDestination } = this.state;
+    if (selectedDestination) {
+      calculateAndDisplayRoute(
+        { lat: this.state.lat, lng: this.state.lng },
+        selectedDestination.lat,
+        selectedDestination.lng
+      );
+    }
   };
 
   render() {
     return (
       <div className="App">
+        <Header />
         <Sidebar
           placesDetails={this.state.sortedPlacesDetails}
           handleSort={this.handleSort}
           addPlace={this.addPlace}
+          setSelectedDestination={this.setSelectedDestination} // Pass function to set the selected destination
+          triggerRouteCalculation={this.triggerRouteCalculation} // Pass function to trigger route calculation
         />
         <Map />
       </div>

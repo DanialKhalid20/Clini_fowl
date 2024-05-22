@@ -1,4 +1,11 @@
 #map {
-    height: 100vh;
-    width: 55%;
+  height: 100vh;
+  width: 55%;
+}
+@media screen and (max-width: 767px) {
+  #map {
+    height: 55vh;
+    width: 100vw;
+    float: left;
+  }
 }
