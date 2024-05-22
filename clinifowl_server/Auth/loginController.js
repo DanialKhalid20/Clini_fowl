@@ -25,8 +25,9 @@ async function login(req, res) {
     }
 
     // If needed, you can also send additional user information
-    console.log(user._id);
-    return res.json({ message: "Success" });
+    req.session.userEmail = user.email;
+    console.log(req.session.userEmail);
+    return res.json({ message: "Success", userEmail: req.session.userEmail });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: "Internal Server Error" });
