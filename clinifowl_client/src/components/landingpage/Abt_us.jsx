@@ -1,8 +1,16 @@
+// Import necessary libraries and components
+import React from 'react';
+import { Link } from 'react-router-dom'; // Assuming you're using React Router for navigation
+
+// Import DetailAboutUs component
+
+
+// Define your About component
 export default function About() {
   return (
     <>
-      <div className="max-w-5xl mx-auto px-8  pt-12 mt-20 pb-12 mb-10 text-black  ">
-        <h1 className="text-5xl font-semibold ">About Clinifowl</h1>
+      <div className="max-w-5xl mx-auto px-8 pt-12 mt-20 pb-12 mb-10 text-black">
+        <h1 className="text-5xl font-semibold">About Clinifowl</h1>
         <p className="pt-6 text-lg">
           Clinifowl is a self-service symptom checker made by experts for anyone
           <br />
@@ -15,11 +23,12 @@ export default function About() {
           medical appointment.
           <br />
         </p>
-        <h1 className="pt-6 text-lg  ">
+        {/* Use Link to navigate to DetailAboutUs */}
+        <h1 className="pt-6 text-lg">
           Learn more&nbsp;
-          <span className="text-sienna font-semibold hover:underline cursor-pointer">
+          <Link to="/detailaboutus" className="text-sienna font-semibold hover:underline">
             about us.
-          </span>
+          </Link>
         </h1>
       </div>
     </>

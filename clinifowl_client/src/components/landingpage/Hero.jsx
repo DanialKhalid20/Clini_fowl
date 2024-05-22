@@ -1,68 +1,48 @@
 import { FaCheck } from "react-icons/fa";
 import img from "../../assets/hen_saying_hello.png";
 import Typewriterr from "./adds_on/Text";
+
 const Hero = () => {
   return (
-    <section className="bg-alabaster min-h-screen">
-      <div className="max-w-5xl mx-auto px-8 grid mt-8 grid-cols-2 pt-20 relative">
-        <div>
-          <h1 className="text-5xl pt-10 font-semibold">
+    <section className="bg-alabaster min-h-screen flex items-center justify-center">
+      <div className="max-w-5xl mx-auto px-4 sm:px-8 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-4 mt-8 pt-8 relative">
+        <div className="order-2 md:order-1 flex flex-col justify-center">
+          <h1 className="text-4xl sm:text-5xl font-semibold">
             Clinifowl is made <br className="py-1" />
             by experts for
-            <br />
+            <br/>
             <Typewriterr />
           </h1>
 
-          <p>
-            <span className="font-semibold text-xl">
-              <br />
+          <p className="mt-6">
+            <span className="font-semibold text-lg sm:text-xl">
               Empower yourself with hen health insights:
               <br />
               <br />
             </span>
-            <span className="font-500 text-lg">
-              <FaCheck
-                style={{ display: "inline-block", marginRight: "5px" }}
-              />{" "}
-              Detect diseases using feces analysis
+            <span className="font-medium text-md sm:text-lg">
+              <FaCheck className="inline-block mr-2" /> Detect diseases using feces analysis
               <br />
-              <FaCheck
-                style={{ display: "inline-block", marginRight: "5px" }}
-              />{" "}
-              Engage with chatbot for assistance
+              <FaCheck className="inline-block mr-2" /> Engage with chatbot for assistance
               <br />
-              <FaCheck
-                style={{ display: "inline-block", marginRight: "5px" }}
-              />{" "}
-              Find nearby veterinary doctors for consultation
+              <FaCheck className="inline-block mr-2" /> Find nearby veterinary doctors for consultation
             </span>
             <br />
             <br />
-            <span className="font-semibold text-xl">
+            <span className="font-semibold text-lg sm:text-xl">
               Join thousands relying on Clinifowl for healthy hens!
             </span>
           </p>
         </div>
 
-        <div className="relative">
+        <div className="order-1 md:order-2 relative flex justify-center items-center">
           {/* Vertical oval */}
-          <div
-            className="absolute top-3 right-0 z-20"
-            style={{
-              width: "300px", // Adjust width as needed
-              height: "400px", // Adjust height as needed
-              backgroundColor: "#f5e6c6",
-              borderRadius: "50%", // 50% border radius makes it a circle
-              zIndex: 20, // Ensure oval is in front of text
-            }}
-          >
+          <div className="relative w-[200px] h-[300px] sm:w-[250px] sm:h-[350px] md:w-[300px] md:h-[400px] bg-[#f5e6c6] rounded-full flex items-center justify-center">
             {/* Hero image inside oval */}
             <img
               src={img}
-              width={250}
-              height={100}
               alt="Hero image"
-              className="relative top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+              className="w-[80%] h-auto object-contain"
             />
           </div>
         </div>

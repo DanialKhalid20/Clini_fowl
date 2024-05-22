@@ -1,20 +1,55 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import img1 from "../../assets/poultryfarmer.png";
 import img2 from "../../assets/veterinarians.png";
 import img3 from "../../assets/hobbyist.png";
 import img4 from "../../assets/Educational_institutes.png";
+import img5 from "../../assets/Landing_page2.png"
+import img6 from "../../assets/detection_page1.png";
 
-const images = [img1, img2, img3, img4];
-export default function HowToUse() {
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const cardWidth = 350; // Set the desired width for each card
-  const totalCards = 4; // Total number of cards
+
+const howToUseImages = [img5, img6, img3, img4];
+const forWhomImages = [img1, img2, img3, img4]; // Assuming same images, replace if different
+
+function HowToUseCards({ showImages }) {
+  const cardWidth = 320;
+  const cardHeight = 400;
+  const imageHeight = cardHeight - 50; // Slightly less than card height
+
+  return (
+    <div className={showImages ? "flex justify-start flex-wrap mt-10 gap-4" : "hidden"}>
+      {howToUseImages.map((image, index) => (
+        <div
+          key={index}
+          className="min-w-[250px] bg-darkalabaster rounded-2xl flex flex-col justify-start items-start shadow-xl"
+          style={{ width: `${cardWidth}px`, height: `${cardHeight}px` }}
+        >
+          <div className="p-4 text-left text-black font-semibold">
+            {index === 0 && "Poultry Farmers"}
+            {index === 1 && "Veterinarians"}
+            {index === 2 && "Hobbyists"}
+            {index === 3 && "Educational institutes"}
+          </div>
+          <img
+            src={image}
+            alt={`Image ${index + 1}`}
+            className="w-full rounded-b-2xl"
+            style={{ height: `${imageHeight}px` }}
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ForWhomCards() {
+  const cardWidth = 250;
+  const cardHeight = 400;
+  const imageHeight = cardHeight - 50; // Slightly less than card height
   const scrollContainerRef = useRef(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const totalCards = forWhomImages.length;
 
-  // Calculate total pages based on number of cards
-  const totalPages = Math.ceil(totalCards / cardWidth);
-
-  // Handle scroll events efficiently with useRef
   const handleScroll = (event) => {
     setScrollPosition(event.target.scrollLeft);
   };
@@ -30,17 +65,77 @@ export default function HowToUse() {
   const handlePrevClick = () => {
     const newPosition = Math.max(scrollPosition - cardWidth, 0);
     setScrollPosition(newPosition);
+    scrollContainerRef.current.scrollTo({ left: newPosition, behavior: "smooth" });
   };
 
   const handleNextClick = () => {
-    const maxScroll = (totalPages - 1) * cardWidth;
+    const maxScroll = (totalCards - 1) * cardWidth;
     const newPosition = Math.min(scrollPosition + cardWidth, maxScroll);
     setScrollPosition(newPosition);
+    scrollContainerRef.current.scrollTo({ left: newPosition, behavior: "smooth" });
+  };
+
+  return (
+    <div className="relative mt-10">
+      <div
+        className="overflow-x-scroll scroll-smooth flex gap-8"
+        ref={scrollContainerRef}
+        style={{
+          scrollbarWidth: "thin",
+          scrollbarColor: "darkalabaster darkalabaster",
+        }}
+      >
+        {forWhomImages.map((image, index) => (
+          <div
+            key={index}
+            className="relative min-w-[250px] bg-darkalabaster rounded-2xl flex flex-col justify-between shadow-xl"
+            style={{ height: `${cardHeight}px` }}
+          >
+            <div className="flex justify-start items-start text-black text-xl sm:text-2xl font-semibold pt-3 px-2 text-left">
+              {index === 0 && "Poultry Farmers"}
+              {index === 1 && "Veterinarians"}
+              {index === 2 && "Hobbyists"}
+              {index === 3 && "Educational institutes"}
+            </div>
+            <img
+              src={image}
+              alt={`Image ${index + 1}`}
+              className="absolute bottom-2 right-2 w-[200px] h-[180px] object-contain"
+              style={{ height: `${imageHeight}px` }}
+            />
+          </div>
+        ))}
+      </div>
+      <div className="absolute inset-0 flex justify-between items-center pointer-events-none">
+        <button
+          className="pointer-events-auto opacity-50 hover:opacity-100 disabled:opacity-25 disabled:pointer-events-none bg-white rounded-full p-2"
+          disabled={scrollPosition === 0}
+          onClick={handlePrevClick}
+        >
+          <i className="fas fa-chevron-left"></i>
+        </button>
+        <button
+          className="pointer-events-auto opacity-50 hover:opacity-100 disabled:opacity-25 disabled:pointer-events-none bg-white rounded-full p-2"
+          disabled={scrollPosition >= (totalCards - 1) * cardWidth}
+          onClick={handleNextClick}
+        >
+          <i className="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export default function HowToUse() {
+  const [showImages, setShowImages] = useState(false);
+
+  const handleLearnMoreClick = () => {
+    setShowImages((prevShowImages) => !prevShowImages); // Toggle showImages state
   };
 
   return (
     <div className="mt-20 pt-12 pb-12 bg-dutchwhite">
-      <div className="mx-auto max-w-4xl pt-10">
+      <div className="mx-auto max-w-5xl pt-10">
         <h1 className="text-black font-bold text-4xl">How Does It Work?</h1>
         <p className="text-gray-900 font-medium text-lg text-justify mt-5">
           Clinifowl is a user-friendly website designed to help you care for
@@ -51,75 +146,15 @@ export default function HowToUse() {
           nearby vets is a breeze too! Simply click on "Nearby Vets" in the menu
           and grant location access to explore dozens of qualified veterinary
           doctors in your vicinity.&nbsp;
-          <span className="text-sienna font-bold hover:underline cursor-pointer">
-            Learn more.
+          <span className="text-sienna font-bold hover:underline cursor-pointer" onClick={handleLearnMoreClick}>
+            {showImages ? "Hide" : "How To Use"}
           </span>
         </p>
 
+        <HowToUseCards showImages={showImages} />
+
         <h1 className="text-black font-bold text-4xl mt-20">For Whom?</h1>
-      </div>
-      {/* Text section */}
-      <div className="mx-auto max-w-5xl mb-5">
-        <div
-          className="overflow-x-scroll scroll-smooth"
-          ref={scrollContainerRef}
-        >
-          <div
-            className="flex"
-            style={{ width: `${cardWidth * totalCards}px`, minHeight: "400px" }}
-          >
-            {/* Cards with images */}
-            {images.slice(0, totalCards).map((image, index) => (
-              <div
-                key={index}
-                className="relative w-40 h-80 bg-darkalabaster rounded-2xl flex flex-col justify-between shadow-xl mt-10 mr-10 "
-                style={{ width: `${cardWidth}px`, overflowY: "auto" }}
-              >
-                <div className="flex justify-center items-center text-black text-2xl font-semibold pt-3">
-                  {index === 0 && (
-                    <div className="text-black font-bold">Poultry Farmers</div>
-                  )}
-                  {index === 1 && (
-                    <div className="text-black font-bold">Veterinarians</div>
-                  )}
-                  {index === 2 && (
-                    <div className="text-black font-bold">Hobbyists</div>
-                  )}
-                  {index === 3 && (
-                    <div className="text-black font-bold">
-                      Educational institutes
-                    </div>
-                  )}
-                  <img
-                    src={image}
-                    alt={`Image ${index + 1}`}
-                    className="absolute bottom-2 right-2"
-                    style={{ width: 220, height: 250 }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-      {/* Navigation buttons */}
-      <div className="mx-auto max-w-5xl">
-        <div className="flex justify-between">
-          <button
-            className="opacity-50 hover:opacity-100 disabled:opacity-25 disabled:pointer-events-none"
-            disabled={scrollPosition === 0}
-            onClick={handlePrevClick}
-          >
-            <i className="fas fa-chevron-left"></i>
-          </button>
-          <button
-            className="opacity-50 hover:opacity-100 disabled:opacity-25 disabled:pointer-events-none"
-            disabled={scrollPosition === (totalPages - 1) * cardWidth}
-            onClick={handleNextClick}
-          >
-            <i className="fas fa-chevron-right"></i>
-          </button>
-        </div>
+        <ForWhomCards />
       </div>
     </div>
   );
