@@ -25,6 +25,7 @@ function Typewriterr() {
 
 export default function Page1() {
   const isLg = useMediaQuery({ query: "(min-width: 1024px)" });
+  sessionStorage.clear();
 
   return (
     <div className="min-h-screen bg-alabaster">
