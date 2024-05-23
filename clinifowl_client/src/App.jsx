@@ -8,7 +8,7 @@ import Detect from "./components/detection/Detection";
 import About from "./components/landingpage/Abt_us";
 import DetailedAboutUs from "./components/landingpage/detailaboutus/DetailAboutUs";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-
+import Protected from "./protected";
 export default function App() {
   return (
     <Router>
@@ -16,8 +16,8 @@ export default function App() {
         <Route path="/" element={<Page1 />} />
         <Route path="/Loginpage" element={<Loginpage />} />
         <Route path="/Signuppage" element={<Signuppage />} />
-        <Route path="/Landing" element={<Landing />} />
-        <Route path="/chatbot" element={<Chatbot />} />
+        <Route path="/Landing" element={<Protected Component={Landing} />} />
+        <Route path="/chatbot" element={<Protected Component={Chatbot} />} />
         <Route path="/nearbydoc" element={<Doctor />} />
         <Route path="/detect" element={<Detect />} />
         <Route path="/about" element={<About />} />

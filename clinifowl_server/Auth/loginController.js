@@ -23,10 +23,17 @@ async function login(req, res) {
     if (!passwordMatch) {
       return res.status(400).json({ error: "Incorrect password" });
     }
-    req.session.userEmail = user.email;
-    console.log(req.session.userEmail);
+
     // If needed, you can also send additional user information
-    return res.json({ message: "Success" });
+    req.session.user = user.email;
+    console.log("Session set with email:", req.session.user); // Debug log
+
+    return res.json({
+      valid: true,
+      userEmail: req.session.user,
+
+      message: "Success",
+    });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: "Internal Server Error" });

@@ -3,28 +3,23 @@
 const passport = require("passport");
 const oauth2strategy = require("passport-google-oauth2").Strategy;
 const User = require("../models/user");
+require("dotenv").config();
 
 function setupPassport() {
   // Passport Google OAuth2 strategy
-
   passport.use(
     new oauth2strategy(
       {
         clientID: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
         callbackURL: "http://localhost:8080/auth/google/callback",
-
         scope: ["profile", "email"],
       },
-
       async (accessToken, refreshToken, profile, done) => {
         try {
           const existingUser = await User.findOne({
             email: profile.emails[0].value,
           });
-
-          // Check the callback URL
-          // Logic for callback URL 1
           if (existingUser) {
             return done(null, existingUser);
           } else {

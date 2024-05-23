@@ -34,44 +34,12 @@ button {
   }
 }
 
-.rate-5 {
-  li:nth-child(1),
-  li:nth-child(2),
-  li:nth-child(3),
-  li:nth-child(4),
-  li:nth-child(5) {
-    color: #4611a7;
-  }
-}
-
-.rate-4 {
-  li:nth-child(1),
-  li:nth-child(2),
-  li:nth-child(3),
-  li:nth-child(4) {
-    color: #4611a7;
-  }
-}
-
-.rate-3 {
-  li:nth-child(1),
-  li:nth-child(2),
-  li:nth-child(3) {
-    color: #4611a7;
-  }
-}
-
-.rate-2 {
-  li:nth-child(1),
-  li:nth-child(2) {
-    color: #4611a7;
-  }
-}
-
-.rate-1 {
-  li:nth-child(1) {
-    color: #4611a7;
-  }
+.rate-5 li:nth-child(-n + 5),
+.rate-4 li:nth-child(-n + 4),
+.rate-3 li:nth-child(-n + 3),
+.rate-2 li:nth-child(-n + 2),
+.rate-1 li:nth-child(1) {
+  color: #e06f43;
 }
 
 .input-wrap {
@@ -99,7 +67,7 @@ button {
 
   button[type="submit"] {
     padding: 10px 15px;
-    background: #2918b1;
+    background: #e06f43;
     color: #fff;
     font-size: 0.9rem;
   }
@@ -146,107 +114,117 @@ button {
   left: 0;
   background: rgba(0, 0, 0, 0.3);
   z-index: 99;
+}
 
-  .inner {
-    position: relative;
-    padding: 20px;
-    width: 500px;
-    max-width: 60%;
-    background: #eee;
-    box-sizing: border-box;
-    z-index: 99;
+.modal .inner {
+  position: relative;
+  padding: 20px;
+  max-width: 90%; /* Adjust this value for responsiveness */
+  background: #eee;
+  box-sizing: border-box;
+  z-index: 99;
+}
 
-    .close {
-      position: absolute;
-      width: 15px;
-      height: 15px;
-      padding: 6px;
-      line-height: 15px;
-      right: 0;
-      top: 0;
-      background: #d7d7d7;
-      color: #000;
-      font-weight: bold;
-      text-align: center;
-      cursor: pointer;
-    }
+.modal .inner .close {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  padding: 6px;
+  line-height: 15px;
+  right: 0;
+  top: 0;
+  background: #d7d7d7;
+  color: #000;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+}
 
-    .review-list {
-      max-height: 80vh;
-      overflow-y: scroll;
+.modal .inner .review-list {
+  max-height: 80vh;
+  overflow-y: scroll;
+}
 
-      .review {
-        display: flex;
-        flex-wrap: wrap;
-        padding: 10px;
-        margin-bottom: 10px;
-        background: #fff;
-        box-sizing: border-box;
+.modal .inner .review-list .review {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px;
+  margin-bottom: 10px;
+  background: #fff;
+  box-sizing: border-box;
+}
 
-        .author,
-        .text {
-          width: 100%;
-        }
+.modal .inner .review-list .review .author,
+.modal .inner .review-list .review .text {
+  width: 100%;
+}
 
-        .author {
-          display: flex;
-          margin-bottom: 10px;
+.modal .inner .review-list .review .author {
+  display: flex;
+  margin-bottom: 10px;
+}
 
-          .author-thumbnail {
-            width: 50px;
-          }
+.modal .inner .review-list .review .author .author-thumbnail {
+  width: 50px;
+}
 
-          .author-info {
-            margin-left: 15px;
-            list-style: none;
+.modal .inner .review-list .review .author .author-info {
+  margin-left: 15px;
+  list-style: none;
+}
 
-            li {
-              margin-bottom: 3px;
+.modal .inner .review-list .review .author .author-info li {
+  margin-bottom: 3px;
+}
 
-              .stars {
-                margin-right: 5px;
-              }
-            }
+.modal .inner .review-list .review .author .author-info li:last-child {
+  margin-bottom: 0;
+}
 
-            li:last-child {
-              margin-bottom: 0;
-            }
-          }
-        }
-      }
-    }
+.modal .inner form {
+  display: flex;
+  flex-wrap: wrap;
+}
 
-    form {
-      display: flex;
-      flex-wrap: wrap;
+.modal .inner form .form-group {
+  width: 100%;
+  margin-bottom: 10px;
+}
 
-      .form-group {
-        width: 100%;
-        margin-bottom: 10px;
+.modal .inner form .form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
 
-        label {
-          display: block;
-          margin-bottom: 5px;
-          font-weight: 500;
-        }
+.modal .inner form input,
+.modal .inner form textarea,
+.modal .inner form select {
+  width: 100%;
+  padding: 10px;
+}
 
-        input,
-        textarea,
-        select {
-          width: 100%;
-          padding: 10px;
-        }
-      }
-
-      button {
-        padding: 10px 20px;
-        background: #4611a7;
-        color: #fff;
-      }
-    }
-  }
+.modal .inner form button {
+  padding: 10px 20px;
+  background: #e06f43;
+  color: #fff;
 }
 
 .modal.open {
   display: flex;
+}
+
+@media screen and (max-width: 767px) {
+  .App {
+    height: 99%;
+    display: flex;
+    flex-direction: column; /* Change flex direction to column */
+  }
+  #map {
+    order: 1; /* Move map below sidebar */
+  }
+
+  .sidebar {
+    order: 2; /* Move sidebar above map */
+  }
 }
