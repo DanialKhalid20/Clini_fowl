@@ -72,16 +72,17 @@ app.post('/api/saveChatMessage', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-app.get('/api/chatHistory/:hchatKey', async (req, res) => {
-  const { hchatKey } = req.params;
+app.get('/api/chatHistory/:hchatKey/:userId', async (req, res) => {
+  const { hchatKey, userId } = req.params;
   try {
-    const chatHistory = await getChatHistory(hchatKey);
+    const chatHistory = await getChatHistory(hchatKey, userId);
     
     res.status(200).json(chatHistory);
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 app.post('/api/saveHChatStack', async (req, res) => {
   const { userId, hchatStack } = req.body;

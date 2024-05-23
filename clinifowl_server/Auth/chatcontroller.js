@@ -17,9 +17,9 @@ async function saveChatMessage(userId, message, role, hchatKey) {
   }
 }
 
-async function getChatHistory(hchatKey) {
+async function getChatHistory(hchatKey, userId) {
     try {
-      const chatHistory = await Chat.find({ hchatKey }).sort({ createdAt: 1 });
+      const chatHistory = await Chat.find({ hchatKey, userId }).sort({ createdAt: 1 });
       return chatHistory;
     } catch (err) {
       console.error("Error fetching chat history:", err);

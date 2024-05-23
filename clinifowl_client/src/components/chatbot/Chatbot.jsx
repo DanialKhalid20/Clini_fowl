@@ -11,6 +11,7 @@ import { faTrash} from '@fortawesome/free-solid-svg-icons';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { Link ,useParams  } from 'react-router-dom';
 import axios from 'axios'; // Import Axios
+import { v4 as uuidv4 } from 'uuid'; // Import uuid
 
 var username ="You";
 var botname = "CockBot";
@@ -49,7 +50,9 @@ useEffect(() => {
 
 useEffect(() => {
   if (activeHChatKey) {
-    fetchChatHistory(activeHChatKey);
+    const userId = sessionStorage.getItem('userId');
+
+    fetchChatHistory(activeHChatKey,userId);
   }
 }, [activeHChatKey]);
 
@@ -57,9 +60,9 @@ useEffect(() => {
     sessionStorage.setItem('activeHChatKey', activeHChatKey);
   }, [activeHChatKey]);
 
-const fetchChatHistory = async (hchatKey) => {
+const fetchChatHistory = async (hchatKey,userId) => {
   try {
-    const response = await axios.get(`http://localhost:8080/api/chatHistory/${hchatKey}`);
+    const response = await axios.get(`http://localhost:8080/api/chatHistory/${hchatKey}/${userId}`);
     setChatHistory(response.data);
     
   } catch (error) {
@@ -78,6 +81,7 @@ const fetchUserDetails = async (userId) => {
 
 // api calling
 const handleSend = async () => {
+  const userId = sessionStorage.getItem('userId'); // Use sessionStorag
   const message = input;
   setInput('');
 
@@ -88,6 +92,7 @@ const handleSend = async () => {
   ]);
 
   try {
+
     const botresponse = await axios.post('http://localhost:8080/api/chat', { message: message });
     const responseData = botresponse.data;
     
@@ -97,7 +102,6 @@ const handleSend = async () => {
       { message: responseData.response,  role: 'assistant' }
     ]);
 
-    const userId = sessionStorage.getItem('userId'); // Use sessionStorag
     await saveChatMessage(userId, message, 'user', activeHChatKey);
     await saveChatMessage(userId, responseData.response, 'assistant', activeHChatKey);
     } catch (error) {
@@ -121,10 +125,10 @@ const handleSend = async () => {
   };
   const handleToggleChat = (hchatKey) => {
     if (activeHChatKey !== hchatKey) {
-      
+      const userId = sessionStorage.getItem('userId');
       setActiveHChatKey(hchatKey);
       sessionStorage.setItem('activeHChatKey', hchatKey);
-      fetchChatHistory(hchatKey);
+      fetchChatHistory(hchatKey,userId);
     }
   };
 
@@ -146,21 +150,27 @@ const handleEnter = async (e) =>
 
     // handle new chat
       // Generate unique key for hchat button
-  const generateHChatKey = () => {
-    return `hchat-${hchatCounter}`;
-  }
+      const generateHChatKey = () => {
+        let newChatKey;
+        do {
+          newChatKey = `hchat-${uuidv4()}`;
+        } while (hchatStack.includes(newChatKey));
+        return newChatKey;
+      };
+
   const handleNewChat = async () => {
     
     const topHChatKey = hchatStack[hchatStack.length - 1];
     if (topHChatKey) {
-      const response = await axios.get(`http://localhost:8080/api/chatHistory/${topHChatKey}`);
+      const userId = sessionStorage.getItem('userId');
+      const response = await axios.get(`http://localhost:8080/api/chatHistory/${topHChatKey}/${userId}`);
       const chatHistory = response.data;
 
       const hasUserMessage = chatHistory.some(message => message.role === 'user');
       const hasHistoryMessage = chatHistory.length > 0;
     
     if (hasUserMessage || hasHistoryMessage) { 
-      const newChatKey = `hchat-${hchatStack.length}`;
+        const newChatKey = generateHChatKey();
       setHChatStack((prevStack) => [...prevStack, newChatKey]);
       setActiveHChatKey(newChatKey);
       sessionStorage.setItem('activeHChatKey', newChatKey);
@@ -207,7 +217,7 @@ const fetchHChatStack = async (userId) => {
       setActiveHChatKey(hchatStack[hchatStack.length - 1]);
     } else {
       // If the fetched stack is empty, create a new hchat button and set it as active
-      const newChatKey = `hchat-${hchatCounter}`;
+      const newChatKey = generateHChatKey();
       setHChatStack([newChatKey]);
       setActiveHChatKey(newChatKey);
       sessionStorage.setItem('activeHChatKey', newChatKey);
@@ -238,7 +248,7 @@ const deleteActiveHChatButton = async () => {
           sessionStorage.setItem('activeHChatKey', newActiveHChatKey);
         } else {
           // No hchat buttons left, create a new one and set it as active
-          const newChatKey = `hchat-${hchatCounter + 1}`;
+          const newChatKey = generateHChatKey();
           setHChatStack([newChatKey]);
           setActiveHChatKey(newChatKey);
           sessionStorage.setItem('activeHChatKey', newChatKey);
