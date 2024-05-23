@@ -1,5 +1,6 @@
 const User = require("../models/user"); // Import your User model
 const bcrypt = require("bcrypt"); // Import bcrypt for hashing passwords
+const Chat = require("../models/chats"); // Import your User model
 
 // Define the login route handler function
 async function login(req, res) {
@@ -21,17 +22,20 @@ async function login(req, res) {
 
     // Check if the passwords match
     if (!passwordMatch) {
+
       return res.status(400).json({ error: "Incorrect password" });
     }
     req.session.userEmail = user.email;
     console.log(req.session.userEmail);
     // If needed, you can also send additional user information
-    return res.json({ message: "Success" });
+
+    return res.json({ message: "Success"  , userId: user._id});
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 }
+
 
 // Export an object containing the login function
 module.exports = { login };

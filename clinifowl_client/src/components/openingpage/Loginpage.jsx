@@ -9,6 +9,7 @@ const signupwithgoogle = () => {
 };
 
 export default function Loginpage() {
+  const [userId, setuserId]= useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emptyField, setEmptyField] = useState(false);
@@ -37,13 +38,21 @@ export default function Loginpage() {
       setInvalidEmail(true);
       return;
     }
-
+    const storedUserId = sessionStorage.getItem('userId');
+  
+    
     axios
-      .post("http://localhost:8080/Loginpage", { email, password })
+      .post("http://localhost:8080/Loginpage", { email, password ,userId: storedUserId})
       .then((result) => {
         console.log(result);
 
+        if (result.data.userId) {
+          console.log("Setting userId in sessionStorage:", result.data.userId);
+          sessionStorage.setItem('userId', result.data.userId);
+        }
+  
         if (result.data.message === "Success") {
+          
           navigate("/Landing");
         }
       })
@@ -67,7 +76,18 @@ export default function Loginpage() {
         }
       });
   };
-
+  window.addEventListener("message", (event) => {
+    // Check if the event originated from the Google Sign-In callback URL
+    if (event.origin === "http://localhost:8080/auth/google/callback", "_self") {
+      // Assuming the event data contains the user ID
+      const userId = event.data.userId;
+      console.log("hello");
+      if (userId) {
+        sessionStorage.setItem('userId', userId); // Save the user ID in session storage
+      }
+  
+    }
+  });
   return (
     <div className="flex justify-center items-center h-screen bg-grey">
       <div className="bg-alabaster p-8 rounded-2xl shadow-2xl w-full max-w-md">

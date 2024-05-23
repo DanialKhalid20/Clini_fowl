@@ -1,6 +1,7 @@
 import Typewriter from "typewriter-effect";
 import img1 from "../../assets/logo.png";
 import { Link } from "react-router-dom";
+import React, { useEffect } from 'react';
 
 function Typewriterr() {
   return (
@@ -24,6 +25,10 @@ function Typewriterr() {
 }
 
 export default function Page1() {
+  useEffect(() => {
+    sessionStorage.clear();
+  }, []);
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 min-h-screen bg-alabaster">
       <div className="flex justify-center items-center">
