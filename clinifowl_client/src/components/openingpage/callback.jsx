@@ -6,18 +6,18 @@ const GoogleCallback = () => {
 
   useEffect(() => {
     // Check if userId is already stored to avoid running twice
-    if (!sessionStorage.getItem("userId")) {
+    if (!sessionStorage.getItem('userId')) {
       const params = new URLSearchParams(window.location.search);
-      const userId = params.get("userId");
+      const userId = params.get('userId');
 
       if (userId) {
-        sessionStorage.setItem("userId", userId);
+        sessionStorage.setItem('userId', userId);
       } else {
-        navigate("/Loginpage");
-      }
-
+        navigate('/Loginpage');
+    }
+      
       // Redirect to the desired page
-      navigate("/Landing");
+      navigate('/Landing');
     }
   }, [navigate]);
 

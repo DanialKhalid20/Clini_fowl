@@ -10,6 +10,7 @@ import DetailedAboutUs from "./components/landingpage/detailaboutus/DetailAboutU
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import GoogleCallback from "./components/openingpage/callback";
 import Protected from "./protected";
+
 export default function App() {
   return (
     <Router>
@@ -24,6 +25,7 @@ export default function App() {
         <Route path="/about" element={<About />} />
         <Route path="/detailaboutus" element={<DetailedAboutUs />} />
         <Route path="/google-callback" element={<GoogleCallback />} />
+
       </Routes>
     </Router>
   );
