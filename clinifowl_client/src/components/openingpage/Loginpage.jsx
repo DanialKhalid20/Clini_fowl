@@ -3,13 +3,14 @@ import { MdClose } from "react-icons/md";
 import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
 
 const signupwithgoogle = () => {
   window.open("http://localhost:8080/auth/google/callback", "_self");
 };
-
+localStorage.setItem("login", false);
 export default function Loginpage() {
-  const [userId, setuserId]= useState("");
+  const [userId, setuserId] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emptyField, setEmptyField] = useState(false);
@@ -38,21 +39,23 @@ export default function Loginpage() {
       setInvalidEmail(true);
       return;
     }
-    const storedUserId = sessionStorage.getItem('userId');
-  
-    
+    const storedUserId = sessionStorage.getItem("userId");
+
     axios
-      .post("http://localhost:8080/Loginpage", { email, password ,userId: storedUserId})
+      .post("http://localhost:8080/Loginpage", {
+        email,
+        password,
+        userId: storedUserId,
+      })
       .then((result) => {
         console.log(result);
 
         if (result.data.userId) {
           console.log("Setting userId in sessionStorage:", result.data.userId);
-          sessionStorage.setItem('userId', result.data.userId);
+          sessionStorage.setItem("userId", result.data.userId);
         }
-  
+
         if (result.data.message === "Success") {
-          
           navigate("/Landing");
         }
       })
@@ -76,107 +79,207 @@ export default function Loginpage() {
         }
       });
   };
+  const isLg = useMediaQuery({ query: "(min-width: 1024px)" });
 
-  
   return (
     <div className="flex justify-center items-center h-screen bg-grey">
-      <div className="bg-alabaster p-8 rounded-2xl shadow-2xl w-full max-w-md">
-        <Link to="/">
-          <div className="flex justify-end">
-            <MdClose className="text-black cursor-pointer" />
-          </div>
-        </Link>
-        <h2 className="text-4xl font-bold text-black mb-4 text-center">
-          Login
-        </h2>
-        {emptyField && (
-          <div className="mb-4 text-red-500 text-lg text-center">
-            Please fill all the data
-          </div>
-        )}
-        {invalidEmail && (
-          <div className="mb-4 text-red-500 text-lg text-center">
-            Invalid email
-          </div>
-        )}
-        {incorrectPassword && (
-          <div className="mb-4 text-red-500 text-lg text-center">
-            Incorrect password
-          </div>
-        )}
-        {accountNotExist && !incorrectPassword && (
-          <div className="mb-4 text-red-500 text-lg text-center">
-            Account does not exist
-          </div>
-        )}
-        {accountverified && (
-          <div className="mb-4 text-red-500 text-lg text-center">
-            Please verify your account first
-          </div>
-        )}
+      {isLg ? (
+        <div className="bg-alabaster p-8 rounded-2xl shadow-2xl w-full max-w-md">
+          <Link to="/">
+            <div className="flex justify-end">
+              <MdClose className="text-black cursor-pointer" />
+            </div>
+          </Link>
+          <h2 className="text-4xl font-bold text-black mb-4 text-center">
+            Login
+          </h2>
+          {emptyField && (
+            <div className="mb-4 text-red-500 text-lg text-center">
+              Please fill all the data
+            </div>
+          )}
+          {invalidEmail && (
+            <div className="mb-4 text-red-500 text-lg text-center">
+              Invalid email
+            </div>
+          )}
+          {incorrectPassword && (
+            <div className="mb-4 text-red-500 text-lg text-center">
+              Incorrect password
+            </div>
+          )}
+          {accountNotExist && !incorrectPassword && (
+            <div className="mb-4 text-red-500 text-lg text-center">
+              Account does not exist
+            </div>
+          )}
+          {accountverified && (
+            <div className="mb-4 text-red-500 text-lg text-center">
+              Please verify your account first
+            </div>
+          )}
 
-        <form onSubmit={handleSubmit} action="POST">
-          <div className="mb-4">
-            <label
-              htmlFor="email"
-              className="block text-medium font-medium text-gray-700"
-            >
-              Email
-            </label>
-            <input
-              type="text"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="p-1 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-lg"
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="password"
-              className="block text-lg font-medium text-gray-700"
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="p-1 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-lg"
-            />
-          </div>
-          <div>
+          <form onSubmit={handleSubmit} action="POST">
+            <div className="mb-4">
+              <label
+                htmlFor="email"
+                className="block text-medium font-medium text-gray-700"
+              >
+                Email
+              </label>
+              <input
+                type="text"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="p-1 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-lg"
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="password"
+                className="block text-lg font-medium text-gray-700"
+              >
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="p-1 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-lg"
+              />
+            </div>
+            <div>
+              <button
+                type="submit"
+                className="w-full bg-sienna text-white text-lg font-medium py-2 rounded-lg "
+              >
+                Log In
+              </button>
+            </div>
+          </form>
+
+          <p className="mt-4 mb-6">
             <button
-              type="submit"
-              className="w-full bg-sienna text-white text-lg font-medium py-2 rounded-lg "
+              className="w-full flex justify-center gap-2 bg-celestialblue text-white text-lg font-medium py-2 rounded-lg mb-4"
+              onClick={() => {
+                signupwithgoogle();
+              }}
             >
-              Log In
+              <FcGoogle className="text-3xl " />
+              Continue with Google
             </button>
-          </div>
-        </form>
-
-        <p className="mt-4 mb-6">
-          <button
-            className="w-full flex justify-center gap-2 bg-celestialblue text-white text-lg font-medium py-2 rounded-lg mb-4"
-            onClick={() => {
-              signupwithgoogle();
-            }}
-          >
-            <FcGoogle className="text-3xl " />
-            Continue with Google
-          </button>
-        </p>
-
-        <div className="text-center">
-          <p>
-            Don&apos;t have an account?{" "}
-            <Link to="/Signuppage" className="text-sienna hover:underline">
-              Sign Up
-            </Link>
           </p>
+
+          <div className="text-center">
+            <p>
+              Don&apos;t have an account?{" "}
+              <Link to="/Signuppage" className="text-sienna hover:underline">
+                Sign Up
+              </Link>
+            </p>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="bg-alabaster p-8 h-full w-full ">
+          <Link to="/">
+            <div className="flex justify-end">
+              <MdClose className="text-black cursor-pointer" />
+            </div>
+          </Link>
+          <h2 className="text-4xl font-bold text-black mb-4 text-center">
+            Login
+          </h2>
+          {emptyField && (
+            <div className="mb-4 text-red-500 text-lg text-center">
+              Please fill all the data
+            </div>
+          )}
+          {invalidEmail && (
+            <div className="mb-4 text-red-500 text-lg text-center">
+              Invalid email
+            </div>
+          )}
+          {incorrectPassword && (
+            <div className="mb-4 text-red-500 text-lg text-center">
+              Incorrect password
+            </div>
+          )}
+          {accountNotExist && !incorrectPassword && (
+            <div className="mb-4 text-red-500 text-lg text-center">
+              Account does not exist
+            </div>
+          )}
+          {accountverified && (
+            <div className="mb-4 text-red-500 text-lg text-center">
+              Please verify your account first
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} action="POST">
+            <div className="mb-4">
+              <label
+                htmlFor="email"
+                className="block text-medium font-medium text-gray-700"
+              >
+                Email
+              </label>
+              <input
+                type="text"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="p-1 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-lg"
+              />
+            </div>
+            <div className="mb-4">
+              <label
+                htmlFor="password"
+                className="block text-lg font-medium text-gray-700"
+              >
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="p-1 mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-lg"
+              />
+            </div>
+            <div>
+              <button
+                type="submit"
+                className="w-full bg-sienna text-white text-lg font-medium py-2 rounded-lg "
+              >
+                Log In
+              </button>
+            </div>
+          </form>
+
+          <p className="mt-4 mb-6">
+            <button
+              className="w-full flex justify-center gap-2 bg-celestialblue text-white text-lg font-medium py-2 rounded-lg mb-4"
+              onClick={() => {
+                signupwithgoogle();
+              }}
+            >
+              <FcGoogle className="text-3xl " />
+              Continue with Google
+            </button>
+          </p>
+
+          <div className="text-center">
+            <p>
+              Don&apos;t have an account?{" "}
+              <Link to="/Signuppage" className="text-sienna hover:underline">
+                Sign Up
+              </Link>
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

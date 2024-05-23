@@ -10,15 +10,17 @@ const passport = require("./Auth/passportSetup");
 const session = require("express-session");
 const cleanupExpiredTokens = require("./Auth/cronjob");
 const cookieParser = require("cookie-parser");
-const { handleChatRequest } = require('./Auth/openai');
-const { requireAuth } = require('./Securinglandingpage/middleware');
-const {deleteHChatStackFromUser, 
-  getHChatStack ,
-  saveHChatStack, 
-  getChatHistory  ,
+const { handleChatRequest } = require("./Auth/openai");
+const { requireAuth } = require("./Securinglandingpage/middleware");
+const {
+  deleteHChatStackFromUser,
+  getHChatStack,
+  saveHChatStack,
+  getChatHistory,
   saveChatMessage,
   deleteHChatStack,
-  getUserDetails}  =  require("./Auth/chatcontroller");
+  getUserDetails,
+} = require("./Auth/chatcontroller");
 
 const router = express.Router();
 
@@ -49,59 +51,61 @@ app.post("/Signuppage", signup.signup);
 app.get("/verification", email_verify.email_verify);
 cleanupExpiredTokens();
 
-
-
-app.get('/auth/google', pass_port.authenticate('google', { scope: ['profile', 'email'] }));
-app.get('/auth/google/callback', pass_port.authenticate('google', { failureRedirect: '/' }), (req, res) => {
-  if (req.user) {
-    const userId = req.user.id;
-    res.redirect(`http://localhost:5173/google-callback?userId=${userId}`);
-  } else {
-    res.redirect('/');
+app.get(
+  "/auth/google",
+  pass_port.authenticate("google", { scope: ["profile", "email"] })
+);
+app.get(
+  "/auth/google/callback",
+  pass_port.authenticate("google", { failureRedirect: "/" }),
+  (req, res) => {
+    if (req.user) {
+      const userId = req.user.id;
+      res.redirect(`http://localhost:5173/google-callback?userId=${userId}`);
+    } else {
+      res.redirect("/");
+    }
   }
-});
+);
 
-app.post('/api/chat', handleChatRequest);
+app.post("/api/chat", handleChatRequest);
 
-app.post('/api/saveChatMessage', async (req, res) => {
-  const { userId, message, role ,hchatKey} = req.body;
+app.post("/api/saveChatMessage", async (req, res) => {
+  const { userId, message, role, hchatKey } = req.body;
   try {
-    await saveChatMessage(userId, message, role,hchatKey);
-    res.status(200).json({ message: 'Chat message saved successfully' });
+    await saveChatMessage(userId, message, role, hchatKey);
+    res.status(200).json({ message: "Chat message saved successfully" });
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
-app.get('/api/chatHistory/:hchatKey/:userId', async (req, res) => {
+app.get("/api/chatHistory/:hchatKey/:userId", async (req, res) => {
   const { hchatKey, userId } = req.params;
   try {
     const chatHistory = await getChatHistory(hchatKey, userId);
-    
+
     res.status(200).json(chatHistory);
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-
-app.post('/api/saveHChatStack', async (req, res) => {
+app.post("/api/saveHChatStack", async (req, res) => {
   const { userId, hchatStack } = req.body;
   console.log(userId);
   console.log(hchatStack);
 
   try {
     await saveHChatStack(userId, hchatStack);
-    res.status(200).json({ message: 'hchatStack saved successfully' });
+    res.status(200).json({ message: "hchatStack saved successfully" });
   } catch (error) {
-    
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
+app.get("/api/getHChatStack/:userId", getHChatStack);
 
-app.get('/api/getHChatStack/:userId', getHChatStack);
-
-app.get('/api/user/:userId', async (req, res) => {
+app.get("/api/user/:userId", async (req, res) => {
   const { userId } = req.params;
   try {
     // Logic to fetch user details based on userId
@@ -110,19 +114,19 @@ app.get('/api/user/:userId', async (req, res) => {
     res.status(200).json(userDetails);
   } catch (error) {
     console.error("Error fetching user details:", error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-app.post('/api/deleteHChatStack/:userId/:hchatKey', async (req, res) => {
+app.post("/api/deleteHChatStack/:userId/:hchatKey", async (req, res) => {
   const { userId, hchatKey } = req.params;
   try {
     await deleteHChatStack(userId, hchatKey);
     const message = await deleteHChatStackFromUser(userId, hchatKey);
     res.status(200).json({ message });
   } catch (error) {
-    console.error('Error deleting HChat stack:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error deleting HChat stack:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 

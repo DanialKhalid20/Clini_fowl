@@ -24,8 +24,7 @@ export default function App() {
         <Route path="/detect" element={<Detect />} />
         <Route path="/about" element={<About />} />
         <Route path="/detailaboutus" element={<DetailedAboutUs />} />
-        <Route path="/google-callback" element={<GoogleCallback />} />
-
+        {/* <Route path="/google-callback" element={<GoogleCallback />} /> */}
       </Routes>
     </Router>
   );

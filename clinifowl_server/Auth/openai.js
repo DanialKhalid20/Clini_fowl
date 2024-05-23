@@ -1,11 +1,11 @@
-const { OpenAI } = require('openai');
+const { OpenAI } = require("openai");
 
 const openai = new OpenAI({ apiKey: process.env.OPEN_AI_SECRET });
 
 // Array to store conversation history
 let conversationHistory = [
   {
-    role: 'system',
+    role: "system",
     content: `
 Your chatbot should focus exclusively on poultry diseases. It should provide concise and accurate information regarding chicken diseases, their prevention, and available medications. The responses should adhere to the following guidelines:
 
@@ -45,18 +45,18 @@ Note:
 - Always show the probability in percentage for every disease shown based on how much the symptoms given by the user match the output disease symptoms.
 - Whenever a user provides symptoms for its chicken or asks about their chicken's health, make sure to ask them about their region and the age of the flock for better results.
 - If you are not certain between multiple diseases, just tell all of them with different probabilities of how likely that disease can be true.
-    `
-  }
+    `,
+  },
 ];
 
 async function handleChatRequest(req, res) {
   try {
     const { message } = req.body;
     // Add user's message to conversation history
-    conversationHistory.push({ role: 'user', content: message });
+    conversationHistory.push({ role: "user", content: message });
     // Call OpenAI API with message
     const response = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo-1106',
+      model: "gpt-3.5-turbo-1106",
       messages: conversationHistory,
       temperature: 0.7,
       max_tokens: 256,
@@ -67,12 +67,12 @@ async function handleChatRequest(req, res) {
     // Extract the bot's response from the OpenAI response
     const botResponse = response.choices[0].message.content;
     // Add bot's response to conversation history
-    conversationHistory.push({ role: 'assistant', content: botResponse });
+    conversationHistory.push({ role: "assistant", content: botResponse });
     // Return the bot's response
     res.json({ response: botResponse });
   } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 }
 

@@ -1,6 +1,6 @@
 // services/hchatService.js
 
-const User = require('../models/user'); // Import the User model
+const User = require("../models/user"); // Import the User model
 
 // Define the function to get HChat stack based on userId
 const getHChatStackFromUserId = async (userId) => {
@@ -10,7 +10,7 @@ const getHChatStackFromUserId = async (userId) => {
 
     // Check if the user document exists
     if (!user) {
-      throw new Error('User not found');
+      throw new Error("User not found");
     }
 
     // Extract the HChat stack from the user document
