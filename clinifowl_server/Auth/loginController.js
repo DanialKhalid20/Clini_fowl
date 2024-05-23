@@ -25,13 +25,8 @@ async function login(req, res) {
     }
 
     // If needed, you can also send additional user information
-    req.session.user = user.email;
-    console.log("Session set with email:", req.session.user); // Debug log
 
     return res.json({
-      valid: true,
-      userEmail: req.session.user,
-
       message: "Success",
     });
   } catch (err) {

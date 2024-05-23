@@ -11,6 +11,7 @@ const signupwithgoogle = () => {
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
+  const [userId, setuserId] = useState("");
   const [password, setPassword] = useState("");
   const [reenteredPassword, setReenteredPassword] = useState("");
   const [passwordsMatch, setPasswordsMatch] = useState(true);
@@ -202,7 +203,7 @@ export default function SignupPage() {
           </div>
         </div>
       ) : (
-        <div className="bg-alabaster p-8 rounded-2xl shadow-2xl w-full min-h-full">
+        <div className="bg-alabaster p-8 w-full min-h-full">
           <Link to="/">
             <div className="flex justify-end">
               <MdClose className="text-black cursor-pointer" />

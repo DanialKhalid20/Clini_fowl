@@ -1,22 +1,18 @@
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-function Protected(props) {
-  const { Component } = props;
+function Protected({ Component }) {
   const navigate = useNavigate();
+
   useEffect(() => {
-    let login = localStorage.getItem("login");
+    const login = sessionStorage.getItem("userId");
+    console.log(login);
     if (!login) {
-      navigate("/");
-    } else if (login) {
-      navigate(`/${Component}`);
+      navigate("/Loginpage");
     }
-  });
-  return (
-    <div>
-      <Component />
-    </div>
-  );
+  }, [navigate]);
+
+  return <Component />;
 }
 
 export default Protected;

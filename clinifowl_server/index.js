@@ -59,16 +59,22 @@ app.get(
   })
 );
 
-app.get("/secure", (req, res) => {
-  console.log("Session data:", req.session.user); // Log session data
-  if (req.session.user) {
-    return res.json({
-      valid: true,
-    });
-  } else {
-    return res.json({ valid: false });
+app.get(
+  "/auth/google",
+  pass_port.authenticate("google", { scope: ["profile", "email"] })
+);
+app.get(
+  "/auth/google/callback",
+  pass_port.authenticate("google", { failureRedirect: "/" }),
+  (req, res) => {
+    if (req.user) {
+      const userId = req.user.id;
+      res.redirect(`http://localhost:5173/google-callback?userId=${userId}`);
+    } else {
+      res.redirect("/");
+    }
   }
-});
+);
 
 const port = process.env.PORT || 8080;
 app.listen(port, console.log(`Listening on port ${port}...`));

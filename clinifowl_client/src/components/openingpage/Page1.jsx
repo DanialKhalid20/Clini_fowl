@@ -82,12 +82,12 @@ export default function Page1() {
           <div className="flex space-x-4 max-w-96">
             <Link to="/Loginpage">
               <button className="bg-sienna hover:bg-black rounded-xl text-white font-semibold px-6 py-2 text-xl w-32 ">
-                Sign up
+                Log in
               </button>
             </Link>
             <Link to="/Signuppage">
               <button className="bg-sienna hover:bg-black rounded-xl text-white font-semibold px-6 py-2 text-xl w-32">
-                Log in
+                Sign up
               </button>
             </Link>
           </div>

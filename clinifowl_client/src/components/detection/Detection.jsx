@@ -8,6 +8,7 @@ const Detection = () => {
   const [detections, setDetections] = useState([]);
   const [image, setImage] = useState("");
   const [error, setError] = useState(null);
+  const [hasSubmitted, setHasSubmitted] = useState(false); // Track submission
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -36,6 +37,8 @@ const Detection = () => {
       );
       setDetections(response.data.detections);
       setImage(`data:image/jpeg;base64,${response.data.image}`);
+
+      setHasSubmitted(true); // Set submission flag
     } catch (error) {
       setError("There was an error uploading the file!");
       console.error("There was an error uploading the file!", error);
@@ -43,11 +46,11 @@ const Detection = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-alabaster p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-alabaster">
       <Header />
-      <div className="main flex flex-col lg:flex-row w-full max-w-6xl">
+      <div className="main flex flex-col lg:flex-row w-full max-w-6xl mt-8">
         {/* Left side - Result Section */}
-        <div className="flex flex-col items-center justify-start w-full lg:w-1/2 p-4 mt-8 lg:mt-0">
+        <div className="flex flex-col items-center justify-start w-full lg:w-1/2 p-4">
           {error && <div className="text-red-500 mb-4">{error}</div>}
           {image && (
             <img
@@ -71,12 +74,19 @@ const Detection = () => {
               ))}
             </ul>
           )}
+          {hasSubmitted && detections.length === 0 && !error && (
+            <div className="text-red-500 text-lg mt-4">No detection found.</div>
+          )}
         </div>
         {/* Right side - Upload Section */}
         <div className="flex flex-col items-center justify-center w-full lg:w-1/2 p-4">
           <div className="relative w-full mb-4">
             <div className="halfCircleStyle"></div>
-            <img className="imag mx-auto" src={myimage} alt="hen" />
+            <img
+              className="imag mx-auto max-h-[300px]"
+              src={myimage}
+              alt="hen"
+            />
           </div>
           <div className="txt text-center mt-4">
             <h1 className="text-3xl font-bold mb-2">

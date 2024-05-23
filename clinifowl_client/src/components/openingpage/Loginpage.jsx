@@ -8,10 +8,9 @@ import { useMediaQuery } from "react-responsive";
 const signupwithgoogle = () => {
   window.open("http://localhost:8080/auth/google/callback", "_self");
 };
-
+localStorage.setItem("login", false);
 export default function Loginpage() {
-  localStorage.setItem("login", false);
-
+  const [userId, setuserId] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emptyField, setEmptyField] = useState(false);
@@ -23,9 +22,10 @@ export default function Loginpage() {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const navigate = useNavigate();
 
+  localStorage.setItem("login", false);
+
   const auth = () => {
     localStorage.setItem("login", true);
-    navigate("/Landing");
   };
 
   const handleSubmit = (e) => {
@@ -46,13 +46,24 @@ export default function Loginpage() {
       return;
     }
 
+    const storedUserId = sessionStorage.getItem("userId");
+
     axios
-      .post("http://localhost:8080/Loginpage", { email, password })
+      .post("http://localhost:8080/Loginpage", {
+        email,
+        password,
+        userId: storedUserId,
+      })
       .then((result) => {
         console.log(result);
 
-        if (result.data.message === "Success") {
+        if (result.data.userId) {
+          console.log("Setting userId in sessionStorage:", result.data.userId);
+          sessionStorage.setItem("userId", result.data.userId);
           auth();
+        }
+
+        if (result.data.message === "Success") {
           navigate("/Landing");
         }
       })
@@ -76,7 +87,6 @@ export default function Loginpage() {
         }
       });
   };
-
   const isLg = useMediaQuery({ query: "(min-width: 1024px)" });
 
   return (

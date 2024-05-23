@@ -8,6 +8,7 @@ import Detect from "./components/detection/Detection";
 import About from "./components/landingpage/Abt_us";
 import DetailedAboutUs from "./components/landingpage/detailaboutus/DetailAboutUs";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import GoogleCallback from "./components/openingpage/callback";
 import Protected from "./protected";
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
         <Route path="/detect" element={<Detect />} />
         <Route path="/about" element={<About />} />
         <Route path="/detailaboutus" element={<DetailedAboutUs />} />
+        <Route path="/google-callback" element={<GoogleCallback />} />
       </Routes>
     </Router>
   );

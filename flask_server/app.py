@@ -62,9 +62,10 @@ def upload_file():
             x1, y1, x2, y2, conf, cls = result[:6]
             class_label = int(cls)
             class_name = "cocci" if class_label == 0 else "healthy" if class_label == 1 else "salmo"
+            confidence = float(conf)
             detections.append({
                 "class": class_name,
-                "confidence": float(conf),
+                "confidence": confidence,
                 "coordinates": [float(x1), float(y1), float(x2), float(y2)]
             })
         
@@ -81,5 +82,5 @@ def upload_file():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-if __name__ == '__main__':
+if __name__ == '_main_':
     app.run(host='0.0.0.0', port=5000)
