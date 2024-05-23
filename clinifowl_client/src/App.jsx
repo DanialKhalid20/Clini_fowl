@@ -16,14 +16,12 @@ export default function App() {
         <Route path="/" element={<Page1 />} />
         <Route path="/Loginpage" element={<Loginpage />} />
         <Route path="/Signuppage" element={<Signuppage />} />
-        <Route path="/Landing" element={<Protected Component={Landing} />} />
-        <Route path="/chatbot" element={<Protected Component={Chatbot} />} />
+        <Route path="/Landing" element={<Landing />} />
+        <Route path="/chatbot" element={<Chatbot />} />
         <Route path="/nearbydoc" element={<Doctor />} />
         <Route path="/detect" element={<Detect />} />
         <Route path="/about" element={<About />} />
         <Route path="/detailaboutus" element={<DetailedAboutUs />} />
-
-
       </Routes>
     </Router>
   );
