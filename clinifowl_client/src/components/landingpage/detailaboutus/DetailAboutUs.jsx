@@ -7,6 +7,7 @@ import Howtouse from "../howtouse";
 import Footer from "../footer";
 
 
+
 export default function DetailedAboutUs() {
   return (
     <>

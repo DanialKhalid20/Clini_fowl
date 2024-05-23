@@ -7,6 +7,7 @@ const Detection = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [detections, setDetections] = useState([]);
     const [image, setImage] = useState('');
+    const [error, setError] = useState(null);
 
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
@@ -14,10 +15,12 @@ const Detection = () => {
     };
 
     const handleSubmit = async () => {
+        setError(null);  // Reset previous errors
         if (!selectedFile) {
-            console.error("No file selected");
+            setError("Please select a file to upload.");
             return;
         }
+
         const formData = new FormData();
         formData.append('file', selectedFile);
 
@@ -30,6 +33,7 @@ const Detection = () => {
             setDetections(response.data.detections);
             setImage(`data:image/jpeg;base64,${response.data.image}`);
         } catch (error) {
+            setError('There was an error uploading the file!');
             console.error('There was an error uploading the file!', error);
         }
     };
@@ -40,6 +44,7 @@ const Detection = () => {
             <div className="main flex flex-col lg:flex-row w-full max-w-6xl">
                 {/* Left side - Result Section */}
                 <div className="flex flex-col items-center justify-start w-full lg:w-1/2 p-4 mt-8 lg:mt-0">
+                    {error && <div className="text-red-500 mb-4">{error}</div>}
                     {image && (
                         <img src={image} alt="Detected result" className="w-full max-h-[80vh] object-contain rounded-lg mb-4" />
                     )}
