@@ -76,18 +76,8 @@ export default function Loginpage() {
         }
       });
   };
-  window.addEventListener("message", (event) => {
-    // Check if the event originated from the Google Sign-In callback URL
-    if (event.origin === "http://localhost:8080/auth/google/callback", "_self") {
-      // Assuming the event data contains the user ID
-      const userId = event.data.userId;
-      console.log("hello");
-      if (userId) {
-        sessionStorage.setItem('userId', userId); // Save the user ID in session storage
-      }
+
   
-    }
-  });
   return (
     <div className="flex justify-center items-center h-screen bg-grey">
       <div className="bg-alabaster p-8 rounded-2xl shadow-2xl w-full max-w-md">

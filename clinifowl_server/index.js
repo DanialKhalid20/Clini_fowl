@@ -17,7 +17,10 @@ const {deleteHChatStackFromUser,
   saveHChatStack, 
   getChatHistory  ,
   saveChatMessage,
-  deleteHChatStack}  =  require("./Auth/chatcontroller");
+  deleteHChatStack,
+  getUserDetails}  =  require("./Auth/chatcontroller");
+
+const router = express.Router();
 
 app.use(express.json());
 app.use(cors());
@@ -33,26 +36,31 @@ app.use(
     },
   })
 );
-connection();
-app.post("/Loginpage", login.login); // Use the imported login function as the route handler
-app.post("/Signuppage", signup.signup);
-app.get("/verification", email_verify.email_verify);
-cleanupExpiredTokens();
-
 //Google signup
 const pass_port = passport(); // Call the setupPassport function to set up Passport
 
 app.use(pass_port.initialize());
 app.use(pass_port.session());
 
-app.get(
-  "/auth/google/callback",
-  pass_port.authenticate("google", {
-    successRedirect: "http://localhost:5173/Landing",
-    failureRedirect:
-      "http://localhost:5173/Loginpage?error=Email already exists",
-  })
-);
+connection();
+
+app.post("/Loginpage", login.login); // Use the imported login function as the route handler
+app.post("/Signuppage", signup.signup);
+app.get("/verification", email_verify.email_verify);
+cleanupExpiredTokens();
+
+
+
+app.get('/auth/google', pass_port.authenticate('google', { scope: ['profile', 'email'] }));
+app.get('/auth/google/callback', pass_port.authenticate('google', { failureRedirect: '/' }), (req, res) => {
+  if (req.user) {
+    const userId = req.user.id;
+    res.redirect(`http://localhost:5173/google-callback?userId=${userId}`);
+  } else {
+    res.redirect('/');
+  }
+});
+
 app.post('/api/chat', handleChatRequest);
 
 app.post('/api/saveChatMessage', async (req, res) => {
@@ -91,6 +99,19 @@ app.post('/api/saveHChatStack', async (req, res) => {
 
 
 app.get('/api/getHChatStack/:userId', getHChatStack);
+
+app.get('/api/user/:userId', async (req, res) => {
+  const { userId } = req.params;
+  try {
+    // Logic to fetch user details based on userId
+    // This could involve querying your database or any other data source
+    const userDetails = await getUserDetails(userId);
+    res.status(200).json(userDetails);
+  } catch (error) {
+    console.error("Error fetching user details:", error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 app.post('/api/deleteHChatStack/:userId/:hchatKey', async (req, res) => {
   const { userId, hchatKey } = req.params;

@@ -6,6 +6,7 @@ import Chatbot from "./components/chatbot/Chatbot";
 import Doctor from "./components/nearbyVet/Doctor";
 import Detect from "./components/detection/Detection";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import GoogleCallback from './components/openingpage/callback'; // Import the new component
 
 export default function App() {
   return (
@@ -18,6 +19,8 @@ export default function App() {
         <Route path="/chatbot" element={<Chatbot />} />
         <Route path="/nearbydoc" element={<Doctor />} />
         <Route path="/detect" element={<Detect />} />
+        <Route path="/google-callback" element={<GoogleCallback />} /> 
+
       </Routes>
     </Router>
   );

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import './Chatbot.css'; // Link the Chatbot.css file
 import myImage from '../../assets/chick.ico'
 import chick from '../../assets/chicky.ico'
+import hen from '../../assets/hen1-removebg-preview.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import {faArrowUp} from '@fortawesome/free-solid-svg-icons';
@@ -24,6 +25,7 @@ const Chatbot = () => {
   const [hchatCounter, setHChatCounter] = useState(0);
   const [activeHChatKey, setActiveHChatKey] = useState(sessionStorage.getItem('activeHChatKey') || null);
   const [hchatStack, setHChatStack] = useState([]); // Initialize stack with first chat
+  const [email, setEmail] = useState('');
 
   const initialGreeting = {
     message: "hello how can i assist you today",
@@ -38,6 +40,8 @@ useEffect(() => {
   const userId = sessionStorage.getItem('userId');
   if (userId) {
     fetchHChatStack(userId);
+    fetchUserDetails(userId);
+
   }
 }, []);
 
@@ -60,6 +64,15 @@ const fetchChatHistory = async (hchatKey) => {
     
   } catch (error) {
     console.error("Error fetching chat history:", error);
+  }
+};
+
+const fetchUserDetails = async (userId) => {
+  try {
+    const response = await axios.get(`http://localhost:8080/api/user/${userId}`);
+    setEmail(response.data);
+  } catch (error) {
+    console.error("Error fetching user details:", error);
   }
 };
 
@@ -284,10 +297,10 @@ const deleteActiveHChatButton = async () => {
 
     <div className="user-info">
 
-     <img className="picture" src="./images/hen2-removebg-preview.png" alt="User profile" width="40" height="40" />
+     <img className="picture" src={hen} alt="User profile" width="40" height="40" />
 
      <div className='user'>
-     <p>My Name is?</p>
+     <p>{email ? email.substring(0, 10) : '' }...</p>
      </div>
         </div>
 

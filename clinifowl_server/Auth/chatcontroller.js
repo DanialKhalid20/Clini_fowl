@@ -96,9 +96,28 @@ async function getChatHistory(hchatKey) {
     }
   };
 
+const getUserDetails = async (userId) => {
+  try {
+    // Query the database to find the user by userId
+    const user = await User.findById(userId);
+    if (!user) {
+      // If user is not found, return null or handle the situation appropriately
+      return null;
+    }
+    // Extract the email from the user object
+    const userEmail = user.email;
+    return userEmail;
+  } catch (error) {
+    console.error("Error fetching user details:", error);
+    throw error; // Rethrow the error or handle it appropriately
+  }
+};
+
+
 module.exports = {deleteHChatStackFromUser,
   getHChatStack , 
   saveHChatStack ,
   getChatHistory ,
   saveChatMessage,
-  deleteHChatStack};
+  deleteHChatStack,
+  getUserDetails};
