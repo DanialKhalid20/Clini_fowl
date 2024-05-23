@@ -20,6 +20,10 @@ export default function SignupPage() {
   const [emailSent, setEmailSent] = useState(false);
   const [emailExist, setEmailExists] = useState(false);
 
+  const auth = () => {
+    localStorage.setItem("login", true);
+  };
+
   const z = () => {
     const path = window.location.pathname;
     console.log(path);
@@ -68,6 +72,7 @@ export default function SignupPage() {
         setEmailExists(false);
 
         setEmailSent(true);
+        auth();
       })
       .catch((err) => {
         setEmailExists(true);

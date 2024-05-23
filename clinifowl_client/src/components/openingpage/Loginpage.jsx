@@ -10,6 +10,8 @@ const signupwithgoogle = () => {
 };
 
 export default function Loginpage() {
+  localStorage.setItem("login", false);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emptyField, setEmptyField] = useState(false);
@@ -20,6 +22,11 @@ export default function Loginpage() {
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const navigate = useNavigate();
+
+  const auth = () => {
+    localStorage.setItem("login", true);
+    navigate("/Landing");
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -45,6 +52,7 @@ export default function Loginpage() {
         console.log(result);
 
         if (result.data.message === "Success") {
+          auth();
           navigate("/Landing");
         }
       })

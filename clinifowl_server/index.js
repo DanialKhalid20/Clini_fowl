@@ -10,18 +10,30 @@ const passport = require("./Auth/passportSetup");
 const session = require("express-session");
 const cleanupExpiredTokens = require("./Auth/cronjob");
 const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
+const MongoStore = require("connect-mongo");
 
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:5173"],
+    methodS: ["POST", "GET"],
+    credentials: true,
+  })
+);
 app.use(cookieParser());
+app.use(bodyParser());
 app.use(
   session({
     secret: process.env.SECRET,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.db, // Your MongoDB connection string
+    }),
     cookie: {
-      secure: false, //because we are using http instead of https
-      maxAge: 1000 * 60 * 60 * 24,
+      secure: false, // Set to true if using HTTPS
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
     },
   })
 );
@@ -46,6 +58,17 @@ app.get(
       "http://localhost:5173/Loginpage?error=Email already exists",
   })
 );
+
+app.get("/secure", (req, res) => {
+  console.log("Session data:", req.session.user); // Log session data
+  if (req.session.user) {
+    return res.json({
+      valid: true,
+    });
+  } else {
+    return res.json({ valid: false });
+  }
+});
 
 const port = process.env.PORT || 8080;
 app.listen(port, console.log(`Listening on port ${port}...`));

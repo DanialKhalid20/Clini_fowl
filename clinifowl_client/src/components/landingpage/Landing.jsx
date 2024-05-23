@@ -4,8 +4,8 @@ import About from "./Abt_us";
 import Card from "./Cards1";
 import Video from "./Videos";
 import Howtouse from "./howtouse";
-import Newsletter from "./News_ltr";
 import Footer from "./footer";
+
 export default function Landing() {
   return (
     <>
@@ -15,7 +15,6 @@ export default function Landing() {
       <Card />
       <Video />
       <Howtouse />
-      {/* <Newsletter /> */}
       <Footer />
     </>
   );
