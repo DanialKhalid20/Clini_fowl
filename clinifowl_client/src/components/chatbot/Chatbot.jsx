@@ -128,6 +128,7 @@ const handleSend = async () => {
       const userId = sessionStorage.getItem('userId');
       setActiveHChatKey(hchatKey);
       sessionStorage.setItem('activeHChatKey', hchatKey);
+      setMessages([]); // Clear current messages
       fetchChatHistory(hchatKey,userId);
     }
   };
