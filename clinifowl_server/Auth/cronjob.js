@@ -21,8 +21,6 @@ async function cleanupExpiredTokens() {
   }
 }
 
-// Define the cron job schedule
-// This example runs the cleanup task every hour
 cron.schedule("* * * * *", cleanupExpiredTokens);
 
 module.exports = cleanupExpiredTokens;
