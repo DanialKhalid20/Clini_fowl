@@ -5,8 +5,14 @@ import Card from "./Cards1";
 import Video from "./Videos";
 import Howtouse from "./howtouse";
 import Footer from "./footer";
+import { useNavigate } from "react-router-dom";
 
 export default function Landing() {
+  const navigate = useNavigate();
+
+  if (!sessionStorage) {
+    navigate("/");
+  }
   return (
     <>
       <Header />

@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import logo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
-import { FaBars, FaTimes } from 'react-icons/fa';
+import { FaBars, FaTimes } from "react-icons/fa";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("N/A");
+
+  const handleChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -14,17 +19,19 @@ const Header = () => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-alabaster shadow-md">
       <div className="max-w-6xl flex items-center justify-between mx-auto p-2 md:p-4">
         <div className="flex items-center">
-        <Link to="/Landing">
-          <img
-            src={logo}
-            width={60}  // Reduced size of the logo
-            height={60} // Reduced size of the logo
-            className="hidden md:block"
-            alt="Clinifowl logo"
-          />
-          </Link>
           <Link to="/Landing">
-            <div className="text-black font-semibold text-2xl md:text-3xl ml-2">Clinifowl</div>
+            <img
+              src={logo}
+              width={60} // Reduced size of the logo
+              height={60} // Reduced size of the logo
+              className="hidden md:block"
+              alt="Clinifowl logo"
+            />
+          </Link>
+          <Link to="/chatbot">
+            <div className="text-black font-semibold text-2xl md:text-3xl ml-2">
+              Clinifowl
+            </div>
           </Link>
         </div>
         <nav className="hidden md:flex gap-6 text-primary items-center font-semibold text-lg">
@@ -34,6 +41,7 @@ const Header = () => {
           <Link to="/detect">
             <div className="hover:underline">Detection</div>
           </Link>
+
           <Link to="/chatbot">
             <div className="hover:underline">Chatbot</div>
           </Link>
@@ -63,7 +71,11 @@ const Header = () => {
           <Link to="/chatbot" className="py-2 text-center" onClick={toggleMenu}>
             Chatbot
           </Link>
-          <Link to="/nearbydoc" className="py-2 text-center" onClick={toggleMenu}>
+          <Link
+            to="/nearbydoc"
+            className="py-2 text-center"
+            onClick={toggleMenu}
+          >
             Nearby Vet
           </Link>
           <Link to="/" className="py-2 text-center" onClick={toggleMenu}>

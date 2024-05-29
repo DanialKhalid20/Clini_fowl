@@ -4,11 +4,12 @@ import img1 from "../../assets/poultryfarmer.png";
 import img2 from "../../assets/veterinarians.png";
 import img3 from "../../assets/hobbyist.png";
 import img4 from "../../assets/Educational_institutes.png";
-import img5 from "../../assets/Landing_page2.png"
+import img5 from "../../assets/Landing_page2.png";
 import img6 from "../../assets/detection_page1.png";
+import img7 from "../../assets/chatbotimg1.png";
+import img8 from "../../assets/nearbyvetimg.png";
 
-
-const howToUseImages = [img5, img6, img3, img4];
+const howToUseImages = [img5, img6, img7, img8];
 const forWhomImages = [img1, img2, img3, img4]; // Assuming same images, replace if different
 
 function HowToUseCards({ showImages }) {
@@ -17,7 +18,11 @@ function HowToUseCards({ showImages }) {
   const imageHeight = cardHeight - 50; // Slightly less than card height
 
   return (
-    <div className={showImages ? "flex justify-start flex-wrap mt-10 gap-4" : "hidden"}>
+    <div
+      className={
+        showImages ? "flex justify-start flex-wrap mt-10 gap-4" : "hidden"
+      }
+    >
       {howToUseImages.map((image, index) => (
         <div
           key={index}
@@ -25,10 +30,10 @@ function HowToUseCards({ showImages }) {
           style={{ width: `${cardWidth}px`, height: `${cardHeight}px` }}
         >
           <div className="p-4 text-left text-black font-semibold">
-            {index === 0 && "Poultry Farmers"}
-            {index === 1 && "Veterinarians"}
-            {index === 2 && "Hobbyists"}
-            {index === 3 && "Educational institutes"}
+            {index === 0 && "Landing Page"}
+            {index === 1 && "Disease Detection"}
+            {index === 2 && "Chatbot"}
+            {index === 3 && "Nearby Vet"}
           </div>
           <img
             src={image}
@@ -65,14 +70,20 @@ function ForWhomCards() {
   const handlePrevClick = () => {
     const newPosition = Math.max(scrollPosition - cardWidth, 0);
     setScrollPosition(newPosition);
-    scrollContainerRef.current.scrollTo({ left: newPosition, behavior: "smooth" });
+    scrollContainerRef.current.scrollTo({
+      left: newPosition,
+      behavior: "smooth",
+    });
   };
 
   const handleNextClick = () => {
     const maxScroll = (totalCards - 1) * cardWidth;
     const newPosition = Math.min(scrollPosition + cardWidth, maxScroll);
     setScrollPosition(newPosition);
-    scrollContainerRef.current.scrollTo({ left: newPosition, behavior: "smooth" });
+    scrollContainerRef.current.scrollTo({
+      left: newPosition,
+      behavior: "smooth",
+    });
   };
 
   return (
@@ -146,7 +157,10 @@ export default function HowToUse() {
           nearby vets is a breeze too! Simply click on "Nearby Vets" in the menu
           and grant location access to explore dozens of qualified veterinary
           doctors in your vicinity.&nbsp;
-          <span className="text-sienna font-bold hover:underline cursor-pointer" onClick={handleLearnMoreClick}>
+          <span
+            className="text-sienna font-bold hover:underline cursor-pointer"
+            onClick={handleLearnMoreClick}
+          >
             {showImages ? "Hide" : "How To Use"}
           </span>
         </p>

@@ -29,7 +29,7 @@ def draw_detections(image_path, detections):
         x1, y1, x2, y2 = detection["coordinates"]
         
         # Draw bounding box
-        draw.rectangle([x1, y1, x2, y2], outline="red", width=3)
+        draw.rectangle([x1, y1, x2, y2], outline="red", width=3) 
         
         # Draw label
         label = f"{class_name} ({confidence * 100:.2f}%)"

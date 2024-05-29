@@ -150,20 +150,38 @@ class Doctor extends Component {
         <li>${place.formatted_phone_number}</li>
       </ul>
       <button class="get-direction-btn">Get Directions</button>
+      <button class="open-google-maps-btn">Open in Google Maps</button>
     `;
       infowindow.setContent(content);
       infowindow.open(map, marker);
 
-      // Find the button element and attach a click event listener
-      const button = document.querySelector(".get-direction-btn");
-      button.addEventListener("click", () => {
-        this.calculateAndDisplayRoute(
-          { lat: this.state.lat, lng: this.state.lng },
-          place.geometry.location.lat(),
-          place.geometry.location.lng()
+      // Ensure the DOM is ready before attaching the event listeners
+      google.maps.event.addListenerOnce(infowindow, "domready", () => {
+        const directionButton = document.querySelector(".get-direction-btn");
+        directionButton.addEventListener("click", () => {
+          this.calculateAndDisplayRoute(
+            { lat: this.state.lat, lng: this.state.lng },
+            place.geometry.location.lat(),
+            place.geometry.location.lng()
+          );
+        });
+
+        const googleMapsButton = document.querySelector(
+          ".open-google-maps-btn"
         );
+        googleMapsButton.addEventListener("click", () => {
+          this.openInGoogleMaps(
+            place.geometry.location.lat(),
+            place.geometry.location.lng()
+          );
+        });
       });
     });
+  };
+
+  openInGoogleMaps = (lat, lng) => {
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+    window.open(url, "_blank");
   };
 
   getCurrentLocation = () => {

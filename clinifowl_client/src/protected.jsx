@@ -5,10 +5,10 @@ function Protected({ Component }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const login = sessionStorage.getItem("userId");
-    console.log(login);
-    if (!login) {
-      navigate("/Loginpage");
+    const storedUserId = sessionStorage.getItem("userId");
+    console.log(storedUserId);
+    if (!storedUserId) {
+      navigate("/");
     }
   }, [navigate]);
 

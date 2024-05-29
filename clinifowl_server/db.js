@@ -5,6 +5,7 @@ const connection = () => {
   const connectionParams = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    connectTimeoutMS: 30000, // Set the timeout to 30 seconds (adjust as needed)
   };
   try {
     mongoose.connect(process.env.DB, connectionParams);

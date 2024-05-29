@@ -25,8 +25,7 @@ async function login(req, res) {
     }
 
     // If needed, you can also send additional user information
-    return res.json({ message: "Success"  , userId: user._id});
-
+    return res.json({ message: "Success", userId: user._id });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ error: "Internal Server Error" });
