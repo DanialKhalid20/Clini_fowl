@@ -9,43 +9,101 @@ import img6 from "../../assets/detection_page1.png";
 import img7 from "../../assets/chatbotimg1.png";
 import img8 from "../../assets/nearbyvetimg.png";
 
+
 const howToUseImages = [img5, img6, img7, img8];
 const forWhomImages = [img1, img2, img3, img4]; // Assuming same images, replace if different
 
 function HowToUseCards({ showImages }) {
-  const cardWidth = 320;
+  const cardWidth = 450;
   const cardHeight = 400;
   const imageHeight = cardHeight - 50; // Slightly less than card height
+  const scrollContainerRef = useRef(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const totalCards = howToUseImages.length;
+
+  const handleScroll = (event) => {
+    setScrollPosition(event.target.scrollLeft);
+  };
+
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (scrollContainer) {
+      scrollContainer.addEventListener("scroll", handleScroll);
+      return () => scrollContainer.removeEventListener("scroll", handleScroll);
+    }
+  }, [scrollContainerRef]);
+
+  const handlePrevClick = () => {
+    const newPosition = Math.max(scrollPosition - cardWidth, 0);
+    setScrollPosition(newPosition);
+    scrollContainerRef.current.scrollTo({
+      left: newPosition,
+      behavior: "smooth",
+    });
+  };
+
+  const handleNextClick = () => {
+    const maxScroll = (totalCards - 1) * cardWidth;
+    const newPosition = Math.min(scrollPosition + cardWidth, maxScroll);
+    setScrollPosition(newPosition);
+    scrollContainerRef.current.scrollTo({
+      left: newPosition,
+      behavior: "smooth",
+    });
+  };
 
   return (
-    <div
-      className={
-        showImages ? "flex justify-start flex-wrap mt-10 gap-4" : "hidden"
-      }
-    >
-      {howToUseImages.map((image, index) => (
-        <div
-          key={index}
-          className="min-w-[250px] bg-darkalabaster rounded-2xl flex flex-col justify-start items-start shadow-xl"
-          style={{ width: `${cardWidth}px`, height: `${cardHeight}px` }}
-        >
-          <div className="p-4 text-left text-black font-semibold">
-            {index === 0 && "Landing Page"}
-            {index === 1 && "Disease Detection"}
-            {index === 2 && "Chatbot"}
-            {index === 3 && "Nearby Vet"}
+    <div className="relative mt-10">
+      <div
+        className={showImages ? "flex mt-10 overflow-x-hidden overflow-y-hidden" : "hidden"}
+        ref={scrollContainerRef}
+        style={{ whiteSpace: 'nowrap', scrollbarWidth: "thin", scrollbarColor: "darkalabaster darkalabaster" }}
+      >
+        {howToUseImages.map((image, index) => (
+          <div
+            key={index}
+            className="inline-block bg-darkalabaster rounded-2xl flex-shrink-0 m-2 shadow-xl"
+            style={{ width: `${cardWidth}px`, height: `${cardHeight}px` }}
+          >
+            <div className="p-2 text-left text-black font-semibold whitespace-break-spaces">
+              {index === 0 && "Open Clinifowl for your chicken's health concerns"}
+              {index === 1 && "In Detection, upload chicken feces for disease detection"}
+              {index === 2 && "In Chatbot ask any queries or remedies related to poultry"}
+              {index === 3 && "Look for Vets in a 5 km radius around you"}
+            </div>
+            <img
+              src={image}
+              alt={`Image ${index + 1}`}
+              className="w-full rounded-b-2xl object-contain"
+              style={{ height: `${imageHeight}px` }}
+            />
           </div>
-          <img
-            src={image}
-            alt={`Image ${index + 1}`}
-            className="w-full rounded-b-2xl"
-            style={{ height: `${imageHeight}px` }}
-          />
+        ))}
+      </div>
+        {showImages && (
+        <div className="absolute inset-0 flex justify-between items-center pointer-events-none ">
+          <button
+            className="pointer-events-auto hover:opacity-100 disabled:opacity-25 disabled:pointer-events-none bg-black rounded-full p-2"
+            disabled={scrollPosition === 0}
+            onClick={handlePrevClick}
+          >
+            <i className="fas fa-chevron-left text-white"></i>
+          </button>
+          <button
+            className="pointer-events-auto hover:opacity-100 disabled:opacity-25 disabled:pointer-events-none bg-black rounded-full p-2"
+            disabled={scrollPosition >= (totalCards - 1) * cardWidth}
+            onClick={handleNextClick}
+          >
+            <i className="fas fa-chevron-right text-white "></i>
+          </button>
         </div>
-      ))}
+      )}
     </div>
   );
 }
+
+
+
 
 function ForWhomCards() {
   const cardWidth = 250;
@@ -89,7 +147,7 @@ function ForWhomCards() {
   return (
     <div className="relative mt-10">
       <div
-        className="overflow-x-scroll scroll-smooth flex gap-8"
+        className="overflow-x-hidden  scroll-smooth flex gap-8"
         ref={scrollContainerRef}
         style={{
           scrollbarWidth: "thin",
@@ -119,18 +177,18 @@ function ForWhomCards() {
       </div>
       <div className="absolute inset-0 flex justify-between items-center pointer-events-none">
         <button
-          className="pointer-events-auto opacity-50 hover:opacity-100 disabled:opacity-25 disabled:pointer-events-none bg-white rounded-full p-2"
+          className="pointer-events-auto  hover:opacity-100 disabled:opacity-25 disabled:pointer-events-none bg-black rounded-full p-2"
           disabled={scrollPosition === 0}
           onClick={handlePrevClick}
         >
-          <i className="fas fa-chevron-left"></i>
+          <i className="fas fa-chevron-left text-white"></i>
         </button>
         <button
-          className="pointer-events-auto opacity-50 hover:opacity-100 disabled:opacity-25 disabled:pointer-events-none bg-white rounded-full p-2"
+          className="pointer-events-auto hover:opacity-100 disabled:opacity-25 disabled:pointer-events-none bg-black rounded-full p-2"
           disabled={scrollPosition >= (totalCards - 1) * cardWidth}
           onClick={handleNextClick}
         >
-          <i className="fas fa-chevron-right"></i>
+          <i className="fas fa-chevron-right text-white" ></i>
         </button>
       </div>
     </div>
