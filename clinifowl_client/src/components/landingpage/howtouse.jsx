@@ -9,7 +9,6 @@ import img6 from "../../assets/detection_page1.png";
 import img7 from "../../assets/chatbotimg1.png";
 import img8 from "../../assets/nearbyvetimg.png";
 
-
 const howToUseImages = [img5, img6, img7, img8];
 const forWhomImages = [img1, img2, img3, img4]; // Assuming same images, replace if different
 
@@ -55,9 +54,17 @@ function HowToUseCards({ showImages }) {
   return (
     <div className="relative mt-10">
       <div
-        className={showImages ? "flex mt-10 overflow-x-hidden overflow-y-hidden" : "hidden"}
+        className={
+          showImages
+            ? "flex mt-10 overflow-x-hidden overflow-y-hidden"
+            : "hidden"
+        }
         ref={scrollContainerRef}
-        style={{ whiteSpace: 'nowrap', scrollbarWidth: "thin", scrollbarColor: "darkalabaster darkalabaster" }}
+        style={{
+          whiteSpace: "nowrap",
+          scrollbarWidth: "thin",
+          scrollbarColor: "darkalabaster darkalabaster",
+        }}
       >
         {howToUseImages.map((image, index) => (
           <div
@@ -66,9 +73,11 @@ function HowToUseCards({ showImages }) {
             style={{ width: `${cardWidth}px`, height: `${cardHeight}px` }}
           >
             <div className="p-2 text-left text-black font-semibold whitespace-break-spaces">
-              {index === 0 && "Open Clinifowl for your chicken's health concerns"}
-              {index === 1 && "In Detection, upload chicken feces for disease detection"}
-              {index === 2 && "In Chatbot ask any queries or remedies related to poultry"}
+              {index === 0 &&
+                "Open Clinifowl for your chicken's health concerns"}
+              {index === 1 &&
+                "In Detection, upload chicken feces for disease detection"}
+              {index === 2 && "In Chatbot ask any queries related to poultry"}
               {index === 3 && "Look for Vets in a 5 km radius around you"}
             </div>
             <img
@@ -80,7 +89,7 @@ function HowToUseCards({ showImages }) {
           </div>
         ))}
       </div>
-        {showImages && (
+      {showImages && (
         <div className="absolute inset-0 flex justify-between items-center pointer-events-none ">
           <button
             className="pointer-events-auto hover:opacity-100 disabled:opacity-25 disabled:pointer-events-none bg-black rounded-full p-2"
@@ -101,9 +110,6 @@ function HowToUseCards({ showImages }) {
     </div>
   );
 }
-
-
-
 
 function ForWhomCards() {
   const cardWidth = 250;
@@ -188,7 +194,7 @@ function ForWhomCards() {
           disabled={scrollPosition >= (totalCards - 1) * cardWidth}
           onClick={handleNextClick}
         >
-          <i className="fas fa-chevron-right text-white" ></i>
+          <i className="fas fa-chevron-right text-white"></i>
         </button>
       </div>
     </div>
