@@ -28,7 +28,7 @@ const Header = () => {
               alt="Clinifowl logo"
             />
           </Link>
-          <Link to="/chatbot">
+          <Link to="/Landing">
             <div className="text-black font-semibold text-2xl md:text-3xl ml-2">
               Clinifowl
             </div>
