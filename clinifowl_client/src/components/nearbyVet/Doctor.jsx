@@ -49,7 +49,7 @@ class Doctor extends Component {
 
   renderMap = () => {
     loadScript(
-      `https://maps.googleapis.com/maps/api/js?key=AIzaSyCgow9YnBwuARfQoqvcCSAh01wfp7Xo6-0&libraries=places&callback=initMap`
+      `https://maps.googleapis.com/maps/api/js&libraries=places&callback=initMap`
     );
     window.initMap = this.initMap;
   };
